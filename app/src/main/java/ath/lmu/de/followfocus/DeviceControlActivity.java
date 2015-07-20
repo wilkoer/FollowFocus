@@ -44,7 +44,7 @@ public class DeviceControlActivity extends FragmentActivity {
     private String mDeviceName;
     private String mDeviceAddress;
     private BluetoothLeService mBluetoothLeService;
-    private SeekBar ledSlider;
+    private SeekBar focusSlider;
     private boolean mConnected = false;
 
     // Code to manage Service lifecycle.
@@ -107,7 +107,8 @@ public class DeviceControlActivity extends FragmentActivity {
 //        mGattServicesList.setOnChildClickListener(servicesListClickListner);
         mConnectionState = (TextView) findViewById(R.id.connection_state);
 
-//        getActionBar().setTitle(mDeviceName);
+        TextView activityTitle = (TextView) findViewById(R.id.textView_connectedDeviceName);
+        activityTitle.setText(mDeviceName);
         // Initialize the ViewPager and set an adapter
 
         if (savedInstanceState == null) {
@@ -124,8 +125,8 @@ public class DeviceControlActivity extends FragmentActivity {
 
 
 
-        ledSlider = (SeekBar) findViewById(R.id.slider_01);
-        ledSlider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        focusSlider = (SeekBar) findViewById(R.id.slider_01);
+        focusSlider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {

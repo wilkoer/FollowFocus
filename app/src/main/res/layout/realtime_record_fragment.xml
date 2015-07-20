@@ -13,7 +13,8 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/realtime_recording"
         android:id="@+id/textView"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="10dp" />
 
     <SeekBar
         android:layout_width="match_parent"

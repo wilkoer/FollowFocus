@@ -32,7 +32,7 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="@string/app_name"
             android:textColor="@color/white"
-            android:id="@+id/textView2" />
+            android:id="@+id/textView_connectedDeviceName" />
 
     </android.support.v7.widget.Toolbar>
 
