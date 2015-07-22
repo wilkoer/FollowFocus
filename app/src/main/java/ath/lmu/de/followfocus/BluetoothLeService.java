@@ -309,6 +309,19 @@ public class BluetoothLeService extends Service {
     }
 
 
+    public void writeByte(Byte data) {
+        byte[] mData = new byte[1];
+
+        mData[0]= data;
+
+        BluetoothGattService Service = mBluetoothGatt.getService(UUID.fromString("6e400001-b5a3-f393-e0a9-e50e24dcca9e"));
+        BluetoothGattCharacteristic characteristic = Service.getCharacteristic(UUID.fromString("6e400002-b5a3-f393-e0a9-e50e24dcca9e"));
+        characteristic.setValue(mData);
+
+        mBluetoothGatt.writeCharacteristic(characteristic);
+    }
+
+
     /**
      * Enables or disables notification on a give characteristic.
      *

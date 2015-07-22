@@ -25,14 +25,17 @@ import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import ath.lmu.de.followfocus.ath.lmu.de.followfocus.ui.SlidingTabsBasicFragment;
+import java.math.BigInteger;
+import java.nio.ByteBuffer;
 
 public class DeviceControlActivity extends FragmentActivity {
     private final static String TAG = DeviceControlActivity.class.getSimpleName();
@@ -44,7 +47,12 @@ public class DeviceControlActivity extends FragmentActivity {
     private String mDeviceName;
     private String mDeviceAddress;
     private BluetoothLeService mBluetoothLeService;
-    private SeekBar focusSlider;
+    private SeekBar realtimeFocusSpeedSlider;
+    private Button calibrationSetMinButton;
+    private Button calibrationSetMaxButton;
+    private Button focusOutButton;
+    private Button focusInButton;
+    private ath.lmu.de.followfocus.RangeSeekBar ioRangeSlider;
     private boolean mConnected = false;
 
     // Code to manage Service lifecycle.
@@ -103,6 +111,11 @@ public class DeviceControlActivity extends FragmentActivity {
         mDeviceName = intent.getStringExtra(EXTRAS_DEVICE_NAME);
         mDeviceAddress = intent.getStringExtra(EXTRAS_DEVICE_ADDRESS);
 
+        calibrationSetMaxButton = (Button) findViewById(R.id.button_startCalibration);
+        calibrationSetMinButton = (Button) findViewById(R.id.button_stopCalibration);
+        focusInButton = (Button) findViewById(R.id.button_focusIn);
+        focusOutButton = (Button) findViewById(R.id.button_focusOut);
+
         // Sets up UI references.
 //        mGattServicesList.setOnChildClickListener(servicesListClickListner);
         mConnectionState = (TextView) findViewById(R.id.connection_state);
@@ -111,22 +124,14 @@ public class DeviceControlActivity extends FragmentActivity {
         activityTitle.setText(mDeviceName);
         // Initialize the ViewPager and set an adapter
 
-        if (savedInstanceState == null) {
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            SlidingTabsBasicFragment fragment = new SlidingTabsBasicFragment();
-
-            transaction.replace(R.id.tab_content_fragment, fragment);
-            transaction.commit();
-        }
-
         Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
         bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
 
 
+        realtimeFocusSpeedSlider = (SeekBar) findViewById(R.id.slider_realtimeRecording);
+        //focusSlider = fragment.getFirstSlider();
 
-
-        focusSlider = (SeekBar) findViewById(R.id.slider_01);
-        focusSlider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        realtimeFocusSpeedSlider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
@@ -140,13 +145,48 @@ public class DeviceControlActivity extends FragmentActivity {
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                String signal = progress<10?"0"+progress+"e":progress+"e";
-                mBluetoothLeService.writeCharacteristic(signal);
-                Log.d("Alex", signal);
+
+                /*
+                * - mapping the progess to a range from minSpeed to maxSpeed
+                * - converting to byte and send to arduino via btle
+                * */
+                int minSpeed = 49;
+                int maxSpeed = 57;
+                int difference = maxSpeed-minSpeed;
+
+                int speed = minSpeed + progress / ( 100 / difference );
+
+                final BigInteger bi = BigInteger.valueOf(speed);
+                final byte[] bytes = bi.toByteArray();
+
+                mBluetoothLeService.writeByte(bytes[0]);
+
             }
         });
 
 
+        focusOutButton.setOnTouchListener(new View.OnTouchListener() {
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                byte mByte = 43;
+
+                mBluetoothLeService.writeByte(mByte);
+                return true;
+            }
+        });
+
+
+        focusInButton.setOnTouchListener(new View.OnTouchListener() {
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                byte mByte = 45;
+
+                mBluetoothLeService.writeByte(mByte);
+                return true;
+            }
+        });
 
     }
 

@@ -32,12 +32,16 @@
 
     <!-- Menu items -->
     <string name="menu_connect">Connect</string>
+    <string name="speed">Speed</string>
     <string name="menu_disconnect">Disconnect</string>
     <string name="menu_scan">Scan</string>
     <string name="menu_stop">Stop</string>
-
+    <string name="focus_in">Focus In</string>
+    <string name="focus_out">Focus Out</string>
     <string name="set_min">Set minimum</string>
     <string name="set_max">Set maximum</string>
+    <string name="inc">In</string>
+    <string name="dec">Out</string>
     <string name="min">min</string>
     <string name="max">max</string>
     <string name="range_calibration">Range Calibration</string>
@@ -45,6 +49,9 @@
     <string name="io">In/Out Linear Focus</string>
     <string name="start">start</string>
     <string name="end">end</string>
+
+    <string name="demo_min_label">Start</string>
+    <string name="demo_max_label">End</string>
 
 
 
