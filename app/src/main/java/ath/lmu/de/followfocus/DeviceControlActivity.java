@@ -66,7 +66,7 @@ public class DeviceControlActivity extends FragmentActivity {
     // current speed to be sent to arduino every EXECUTION_INTERVAL seconds
     private byte currentSpeed = 0;
     private byte currentDirection = 0;
-    
+
     private Boolean recording = false;
 
     // Code to manage Service lifecycle.
@@ -233,17 +233,16 @@ public class DeviceControlActivity extends FragmentActivity {
 
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                byte mByte = 43;
+                byte mByte = 43; // == ASCII minus
                 byte nullByte = 0;
 
 
                 if (event.getAction() == event.ACTION_DOWN) {
-                    currentDirection = mByte;
+                    currentDirection = mByte; // set current direction minus
                 } else if (event.getAction() == event.ACTION_UP) {
-                    currentDirection = nullByte;
+                    currentDirection = nullByte; // set current direction zero
                 }
 
-                //mBluetoothLeService.writeByte(mByte);
                 return true;
             }
         });
@@ -253,16 +252,15 @@ public class DeviceControlActivity extends FragmentActivity {
 
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                byte mByte = 45;
+                byte mByte = 45; // == ASCII plus
                 byte nullByte = 0;
 
                 if (event.getAction() == event.ACTION_DOWN) {
-                    currentDirection = mByte;
+                    currentDirection = mByte; // set current direction plus
                 } else if (event.getAction() == event.ACTION_UP) {
-                    currentDirection = nullByte;
+                    currentDirection = nullByte; // set current direction zero
                 }
 
-                //mBluetoothLeService.writeByte(mByte);
                 return true;
             }
         });
@@ -273,8 +271,12 @@ public class DeviceControlActivity extends FragmentActivity {
                 if (!recording) {
                     recording = true;
 
+                    // record
 
+                } else {
+                    recording = false;
 
+                    // stop recording
                 }
 
 
@@ -283,6 +285,11 @@ public class DeviceControlActivity extends FragmentActivity {
 
     }
 
+    /*
+    * - execute every xx ms (EXECUTION_INTERVAL)
+    * - send currentDirection and currentSpeed via BTLE to Arduino device
+    *
+    * */
     public void startTimer (){
         final Handler handler = new Handler ();
         Timer timer = new Timer();
@@ -292,6 +299,10 @@ public class DeviceControlActivity extends FragmentActivity {
                     public void run() {
                         mBluetoothLeService.writeByte(currentDirection);
                         mBluetoothLeService.writeByte(currentSpeed);
+
+                        if (recording) {
+                            // new FocusScene..
+                        }
                     }
                 });
             }
@@ -319,35 +330,6 @@ public class DeviceControlActivity extends FragmentActivity {
         super.onDestroy();
         unbindService(mServiceConnection);
         mBluetoothLeService = null;
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.gatt_services, menu);
-        if (mConnected) {
-            menu.findItem(R.id.menu_connect).setVisible(false);
-            menu.findItem(R.id.menu_disconnect).setVisible(true);
-        } else {
-            menu.findItem(R.id.menu_connect).setVisible(true);
-            menu.findItem(R.id.menu_disconnect).setVisible(false);
-        }
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()) {
-            case R.id.menu_connect:
-                mBluetoothLeService.connect(mDeviceAddress);
-                return true;
-            case R.id.menu_disconnect:
-                mBluetoothLeService.disconnect();
-                return true;
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     private void updateConnectionState(final int resourceId) {
