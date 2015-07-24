@@ -141,6 +141,7 @@
                     android:id="@+id/slider_realtimeRecording"
                     android:layout_gravity="center_horizontal" />
 
+
                 <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
@@ -173,66 +174,23 @@
                         android:layout_height="60dp"
                         android:text="@string/inc"
                         android:id="@+id/button_focusIn"
-                        android:layout_weight="1" />
+                        android:layout_weight="1"
+                        android:verticalSpacing="10dp"
+                        android:horizontalSpacing="10dp"
+                        android:stretchMode="columnWidth"
+                        android:gravity="center"/>
+
                 </LinearLayout>
 
-            </LinearLayout>
-
-            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:layout_margin="10dp"
-                android:gravity="center"
-                android:padding="10dp"
-                android:background="#ffffff">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="@string/io"
-                    android:id="@+id/textView_io"
-                    android:layout_gravity="center_horizontal" />
-
-                <ath.lmu.de.followfocus.RangeSeekBar
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/slider_io_1"
-                    android:layout_gravity="center_horizontal" />
-
-
-                <LinearLayout
-                    android:orientation="horizontal"
+                <ath.lmu.de.followfocus.ExpandableHeightListView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal">
-
-                    <RadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/focus_in"
-                        android:id="@+id/radioButton"
-                        android:layout_gravity="center_horizontal" />
-
-                    <RadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/focus_out"
-                        android:id="@+id/radioButton2"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginLeft="10dp" />
-
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Start"
-                        android:id="@+id/button_ioStart"
-                        android:layout_marginLeft="10dp" />
-                </LinearLayout>
+                    android:id="@+id/listView_recordedScenes">
+                </ath.lmu.de.followfocus.ExpandableHeightListView>
 
 
             </LinearLayout>
+
         </LinearLayout>
     </ScrollView>
 

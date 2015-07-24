@@ -36,12 +36,17 @@ import android.widget.TextView;
 
 import java.math.BigInteger;
 import java.nio.ByteBuffer;
+import java.text.DateFormat;
+import java.util.Date;
+import java.util.UUID;
 
 public class DeviceControlActivity extends FragmentActivity {
     private final static String TAG = DeviceControlActivity.class.getSimpleName();
 
     public static final String EXTRAS_DEVICE_NAME = "DEVICE_NAME";
     public static final String EXTRAS_DEVICE_ADDRESS = "DEVICE_ADDRESS";
+
+
 
     private TextView mConnectionState;
     private String mDeviceName;
@@ -52,7 +57,6 @@ public class DeviceControlActivity extends FragmentActivity {
     private Button calibrationSetMaxButton;
     private Button focusOutButton;
     private Button focusInButton;
-    private ath.lmu.de.followfocus.RangeSeekBar ioRangeSlider;
     private boolean mConnected = false;
 
     // Code to manage Service lifecycle.
@@ -94,9 +98,22 @@ public class DeviceControlActivity extends FragmentActivity {
                 updateConnectionState(R.string.disconnected);
                 invalidateOptionsMenu();
             } else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
+                mBluetoothLeService.enableTXNotification();
                 // Show all the supported services and characteristics on the user interface.
             } else if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
-                //
+                Log.d("Alex", "ACTION DATA AVAILABLE");
+                final String txValue = intent.getStringExtra(BluetoothLeService.EXTRA_DATA);
+                runOnUiThread(new Runnable() {
+                    public void run() {
+                        try {
+
+                            Log.d("Alex", txValue);
+
+                        } catch (Exception e) {
+                            Log.e(TAG, e.toString());
+                        }
+                    }
+                });
             }
         }
     };
@@ -152,15 +169,33 @@ public class DeviceControlActivity extends FragmentActivity {
                 * */
                 int minSpeed = 49;
                 int maxSpeed = 57;
-                int difference = maxSpeed-minSpeed;
+                int difference = maxSpeed - minSpeed;
 
-                int speed = minSpeed + progress / ( 100 / difference );
+                int speed = minSpeed + progress / (100 / difference);
 
                 final BigInteger bi = BigInteger.valueOf(speed);
                 final byte[] bytes = bi.toByteArray();
 
                 mBluetoothLeService.writeByte(bytes[0]);
 
+            }
+        });
+
+        calibrationSetMinButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                byte mByte = 97;
+
+                mBluetoothLeService.writeByte(mByte);
+            }
+        });
+
+        calibrationSetMaxButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                byte mByte = 122;
+
+                mBluetoothLeService.writeByte(mByte);
             }
         });
 
