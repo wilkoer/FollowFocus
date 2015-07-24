@@ -23,6 +23,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -31,21 +32,20 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
 import java.math.BigInteger;
-import java.nio.ByteBuffer;
-import java.text.DateFormat;
-import java.util.Date;
-import java.util.UUID;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class DeviceControlActivity extends FragmentActivity {
     private final static String TAG = DeviceControlActivity.class.getSimpleName();
 
     public static final String EXTRAS_DEVICE_NAME = "DEVICE_NAME";
     public static final String EXTRAS_DEVICE_ADDRESS = "DEVICE_ADDRESS";
-
+    private final long EXECUTION_INTERVAL = 50; // miliseconds
 
 
     private TextView mConnectionState;
@@ -57,7 +57,17 @@ public class DeviceControlActivity extends FragmentActivity {
     private Button calibrationSetMaxButton;
     private Button focusOutButton;
     private Button focusInButton;
+    private ImageButton recordButton;
+    private ImageButton playButton;
+    private Button reconnectButton;
     private boolean mConnected = false;
+    private ExpandableHeightListView recordedScenesList;
+
+    // current speed to be sent to arduino every EXECUTION_INTERVAL seconds
+    private byte currentSpeed = 0;
+    private byte currentDirection = 0;
+    
+    private Boolean recording = false;
 
     // Code to manage Service lifecycle.
     private final ServiceConnection mServiceConnection = new ServiceConnection() {
@@ -69,6 +79,7 @@ public class DeviceControlActivity extends FragmentActivity {
                 Log.e(TAG, "Unable to initialize Bluetooth");
                 finish();
             }
+
             // Automatically connects to the device upon successful start-up initialization.
             mBluetoothLeService.connect(mDeviceAddress);
         }
@@ -91,10 +102,15 @@ public class DeviceControlActivity extends FragmentActivity {
             final String action = intent.getAction();
             if (BluetoothLeService.ACTION_GATT_CONNECTED.equals(action)) {
                 mConnected = true;
+                reconnectButton.setText(R.string.disconnect);
                 updateConnectionState(R.string.connected);
                 invalidateOptionsMenu();
+
+                startTimer();
+
             } else if (BluetoothLeService.ACTION_GATT_DISCONNECTED.equals(action)) {
                 mConnected = false;
+                reconnectButton.setText(R.string.connect);
                 updateConnectionState(R.string.disconnected);
                 invalidateOptionsMenu();
             } else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
@@ -128,18 +144,21 @@ public class DeviceControlActivity extends FragmentActivity {
         mDeviceName = intent.getStringExtra(EXTRAS_DEVICE_NAME);
         mDeviceAddress = intent.getStringExtra(EXTRAS_DEVICE_ADDRESS);
 
-        calibrationSetMaxButton = (Button) findViewById(R.id.button_startCalibration);
-        calibrationSetMinButton = (Button) findViewById(R.id.button_stopCalibration);
+        calibrationSetMaxButton = (Button) findViewById(R.id.button_stopCalibration);
+        calibrationSetMinButton = (Button) findViewById(R.id.button_startCalibration);
         focusInButton = (Button) findViewById(R.id.button_focusIn);
         focusOutButton = (Button) findViewById(R.id.button_focusOut);
+        reconnectButton = (Button) findViewById(R.id.button_reconnect);
+        recordedScenesList = (ExpandableHeightListView) findViewById(R.id.listView_recordedScenes);
+        recordButton = (ImageButton) findViewById(R.id.button_record);
+        playButton = (ImageButton) findViewById(R.id.button_play);
 
         // Sets up UI references.
-//        mGattServicesList.setOnChildClickListener(servicesListClickListner);
         mConnectionState = (TextView) findViewById(R.id.connection_state);
 
         TextView activityTitle = (TextView) findViewById(R.id.textView_connectedDeviceName);
         activityTitle.setText(mDeviceName);
-        // Initialize the ViewPager and set an adapter
+
 
         Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
         bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
@@ -176,8 +195,7 @@ public class DeviceControlActivity extends FragmentActivity {
                 final BigInteger bi = BigInteger.valueOf(speed);
                 final byte[] bytes = bi.toByteArray();
 
-                mBluetoothLeService.writeByte(bytes[0]);
-
+                currentSpeed = bytes[0];
             }
         });
 
@@ -199,14 +217,33 @@ public class DeviceControlActivity extends FragmentActivity {
             }
         });
 
+        reconnectButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mBluetoothLeService != null && !mConnected) {
+                    final boolean result = mBluetoothLeService.connect(mDeviceAddress);
+                    Log.d(TAG, "Connect request result=" + result);
+                } else if (mBluetoothLeService != null && mConnected){
+                    mBluetoothLeService.disconnect();
+                }
+            }
+        });
 
         focusOutButton.setOnTouchListener(new View.OnTouchListener() {
 
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 byte mByte = 43;
+                byte nullByte = 0;
 
-                mBluetoothLeService.writeByte(mByte);
+
+                if (event.getAction() == event.ACTION_DOWN) {
+                    currentDirection = mByte;
+                } else if (event.getAction() == event.ACTION_UP) {
+                    currentDirection = nullByte;
+                }
+
+                //mBluetoothLeService.writeByte(mByte);
                 return true;
             }
         });
@@ -217,14 +254,49 @@ public class DeviceControlActivity extends FragmentActivity {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 byte mByte = 45;
+                byte nullByte = 0;
 
-                mBluetoothLeService.writeByte(mByte);
+                if (event.getAction() == event.ACTION_DOWN) {
+                    currentDirection = mByte;
+                } else if (event.getAction() == event.ACTION_UP) {
+                    currentDirection = nullByte;
+                }
+
+                //mBluetoothLeService.writeByte(mByte);
                 return true;
+            }
+        });
+
+        recordButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!recording) {
+                    recording = true;
+
+
+
+                }
+
+
             }
         });
 
     }
 
+    public void startTimer (){
+        final Handler handler = new Handler ();
+        Timer timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            public void run() {
+                handler.post(new Runnable() {
+                    public void run() {
+                        mBluetoothLeService.writeByte(currentDirection);
+                        mBluetoothLeService.writeByte(currentSpeed);
+                    }
+                });
+            }
+        }, 0, EXECUTION_INTERVAL);
+    }
 
     @Override
     protected void onResume() {

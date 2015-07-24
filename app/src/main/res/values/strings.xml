@@ -53,6 +53,9 @@
     <string name="demo_min_label">Start</string>
     <string name="demo_max_label">End</string>
 
+    <string name="connect">Connect</string>
+    <string name="disconnect">Disconnect</string>
+
 
 
 </resources>
