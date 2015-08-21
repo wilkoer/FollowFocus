@@ -16,6 +16,6 @@
         android:layout_height="wrap_content"
         android:id="@+id/editText_scene_name"
         android:layout_gravity="center_horizontal"
-        android:hint="@string/new_focus_recording"
+        android:text="@string/new_focus_recording"
         android:layout_margin="10dp" />
 </LinearLayout>

@@ -276,12 +276,10 @@ public class DeviceControlActivity extends FragmentActivity implements RecordSce
             @Override
             public void onClick(View v) {
                 if (!recording) {
-                    recording = true;
 
                     DialogFragment newSceneDialog = new RecordSceneDialogFragment();
                     newSceneDialog.show(getFragmentManager(), "new");
 
-                    recordButton.setImageResource(R.drawable.stop);
 
                 } else {
                     recording = false;
@@ -367,5 +365,7 @@ public class DeviceControlActivity extends FragmentActivity implements RecordSce
         sceneListAdapter.add(new FocusScene(name));
         sceneListAdapter.notifyDataSetChanged();
 
+        recording = true;
+        recordButton.setImageResource(R.drawable.stop);
     }
 }

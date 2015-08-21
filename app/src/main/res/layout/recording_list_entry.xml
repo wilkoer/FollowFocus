@@ -7,10 +7,9 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Large Text"
+        android:text="@string/new_focus_recording"
         android:id="@+id/textView_recording_name"
         android:layout_margin="10dp"
-        android:hint="@string/new_focus_recording"
         android:layout_weight="1" />
 
     <TextView
