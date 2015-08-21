@@ -16,6 +16,7 @@
 
 package ath.lmu.de.followfocus;
 
+import android.app.DialogFragment;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -37,15 +38,17 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import java.math.BigInteger;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class DeviceControlActivity extends FragmentActivity {
+public class DeviceControlActivity extends FragmentActivity implements RecordSceneDialogFragment.NoticeDialogListener {
     private final static String TAG = DeviceControlActivity.class.getSimpleName();
 
     public static final String EXTRAS_DEVICE_NAME = "DEVICE_NAME";
     public static final String EXTRAS_DEVICE_ADDRESS = "DEVICE_ADDRESS";
-    private final long EXECUTION_INTERVAL = 50; // miliseconds
+    private final long EXECUTION_INTERVAL = 50; // milliseconds
 
 
     private TextView mConnectionState;
@@ -62,6 +65,7 @@ public class DeviceControlActivity extends FragmentActivity {
     private Button reconnectButton;
     private boolean mConnected = false;
     private ExpandableHeightListView recordedScenesList;
+    private SceneListAdapter sceneListAdapter;
 
     // current speed to be sent to arduino every EXECUTION_INTERVAL seconds
     private byte currentSpeed = 0;
@@ -117,13 +121,13 @@ public class DeviceControlActivity extends FragmentActivity {
                 mBluetoothLeService.enableTXNotification();
                 // Show all the supported services and characteristics on the user interface.
             } else if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
-                Log.d("Alex", "ACTION DATA AVAILABLE");
+                Log.d("ATH", "ACTION DATA AVAILABLE");
                 final String txValue = intent.getStringExtra(BluetoothLeService.EXTRA_DATA);
                 runOnUiThread(new Runnable() {
                     public void run() {
                         try {
 
-                            Log.d("Alex", txValue);
+                            Log.d("ATH", txValue);
 
                         } catch (Exception e) {
                             Log.e(TAG, e.toString());
@@ -163,10 +167,11 @@ public class DeviceControlActivity extends FragmentActivity {
         Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
         bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
 
+        sceneListAdapter = new SceneListAdapter(this);
+        recordedScenesList.setExpanded(true);
+        recordedScenesList.setAdapter(sceneListAdapter);
 
         realtimeFocusSpeedSlider = (SeekBar) findViewById(R.id.slider_realtimeRecording);
-        //focusSlider = fragment.getFirstSlider();
-
         realtimeFocusSpeedSlider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
             @Override
@@ -229,6 +234,8 @@ public class DeviceControlActivity extends FragmentActivity {
             }
         });
 
+
+
         focusOutButton.setOnTouchListener(new View.OnTouchListener() {
 
             @Override
@@ -271,10 +278,14 @@ public class DeviceControlActivity extends FragmentActivity {
                 if (!recording) {
                     recording = true;
 
-                    // record
+                    DialogFragment newSceneDialog = new RecordSceneDialogFragment();
+                    newSceneDialog.show(getFragmentManager(), "new");
+
+                    recordButton.setImageResource(R.drawable.stop);
 
                 } else {
                     recording = false;
+                    recordButton.setImageResource(R.drawable.record);
 
                     // stop recording
                 }
@@ -348,5 +359,13 @@ public class DeviceControlActivity extends FragmentActivity {
         intentFilter.addAction(BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED);
         intentFilter.addAction(BluetoothLeService.ACTION_DATA_AVAILABLE);
         return intentFilter;
+    }
+
+    public void onNewScenePositiveClick(String name) {
+        //add new scene
+        Log.d("ATH", "SUCCESS " + name);
+        sceneListAdapter.add(new FocusScene(name));
+        sceneListAdapter.notifyDataSetChanged();
+
     }
 }

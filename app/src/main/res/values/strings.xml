@@ -56,6 +56,12 @@
     <string name="connect">Connect</string>
     <string name="disconnect">Disconnect</string>
 
+    <string name="new_focus_recording">New Focus Scene</string>
+    <string name="please_enter_name">Please enter a scene name:</string>
+    <string name="apply">Start recording</string>
+    <string name="cancel">Cancel</string>
+
+
 
 
 </resources>

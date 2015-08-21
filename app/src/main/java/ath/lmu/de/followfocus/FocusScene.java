@@ -10,15 +10,19 @@ import java.util.TimerTask;
 public class FocusScene {
     private ArrayList<Integer> speedValues;
     private ArrayList<Integer> movementValues;
-
+    private String name;
 
 
     private Timer timer;
 
 
+    public String getName() {
+        return name;
+    }
 
-    public FocusScene() {
-        timer = new Timer();
+    public FocusScene(String name) {
+        this.name = name;
+
     }
 
     public void addSpeedValue(int speed) {
