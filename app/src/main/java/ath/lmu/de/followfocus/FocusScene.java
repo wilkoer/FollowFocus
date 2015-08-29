@@ -1,24 +1,29 @@
 package ath.lmu.de.followfocus;
 
-import android.util.Log;
-
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
 
 /**
- * Created by alexander on 24.07.15.
+ * A Focus Scene has a List for speed values, direction values, a name and a status.
+ * Name and status are shown in the list entry.
  */
 public class FocusScene {
     private ArrayList<Integer> speedValues;
     private ArrayList<Integer> movementValues;
     private String name, status;
-    private boolean isRecording = false;
 
+    public FocusScene(String name) {
+        this.name = name;
+        this.status = "";
+        this.movementValues = new ArrayList<>();
+        this.speedValues = new ArrayList<>();
+    }
 
-    private Timer timer;
-
-
+    public FocusScene(String status, String name, ArrayList<Integer> speedValues, ArrayList<Integer> movementValues) {
+        this.status = status;
+        this.name = name;
+        this.speedValues = speedValues;
+        this.movementValues = movementValues;
+    }
 
     public String getName() {
         return name;
@@ -30,18 +35,6 @@ public class FocusScene {
 
     public ArrayList<Integer> getMovementValues() {
         return movementValues;
-    }
-
-    public FocusScene(String name) {
-        this.name = name;
-        this.status = "";
-        this.movementValues = new ArrayList<>();
-        this.speedValues = new ArrayList<>();
-
-    }
-
-    public boolean isRecording() {
-        return isRecording;
     }
 
     public void setStatus(String status) {

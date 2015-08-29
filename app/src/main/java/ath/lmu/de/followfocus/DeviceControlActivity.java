@@ -23,6 +23,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -37,7 +38,16 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -46,6 +56,8 @@ public class DeviceControlActivity extends FragmentActivity implements RecordSce
 
     public static final String EXTRAS_DEVICE_NAME = "DEVICE_NAME";
     public static final String EXTRAS_DEVICE_ADDRESS = "DEVICE_ADDRESS";
+    public static final String PREFS_SCENES = "RecordedScenes";
+    public static final String SCENE_LIST = "SceneList";
     private final long EXECUTION_INTERVAL = 50; // milliseconds
     private boolean isSceneSelected = false;
 
@@ -69,10 +81,9 @@ public class DeviceControlActivity extends FragmentActivity implements RecordSce
     private FocusScene currentFocusScene;
     private FocusScene selectedFocusScene;
 
-    // current speed to be sent to arduino every EXECUTION_INTERVAL seconds
+    // current speed and direction to be sent to arduino every EXECUTION_INTERVAL seconds
     private byte currentSpeed = 0;
     private byte currentDirection = 0;
-
     private int currentSceneFrame = 0;
 
     private boolean isRecording = false;
@@ -182,6 +193,50 @@ public class DeviceControlActivity extends FragmentActivity implements RecordSce
         recordedScenesList.setAdapter(sceneListAdapter);
 
         realtimeFocusSpeedSlider = (SeekBar) findViewById(R.id.slider_realtimeRecording);
+
+
+        /*
+        * Get JSON String from shared preferences.
+        * Create JSONArray Object and iterate through.
+        * Retrieve data and use it with extended FocusScene constructor in order to recreate FocusScene Objects.
+        * Add to List Adapter to show in List.
+        * */
+
+        SharedPreferences savedScenes = getSharedPreferences(PREFS_SCENES, 0);
+        String savedScenesJson = savedScenes.getString(SCENE_LIST, null);
+
+        Log.d("ATH", savedScenesJson);
+
+        if (savedScenesJson != null) {
+            try {
+                JSONArray scenesJSON = new JSONArray(savedScenesJson);
+
+                for (int i = 0; i < scenesJSON.length(); i++) {
+                    JSONObject sceneObject = scenesJSON.getJSONObject(i);
+
+                    ArrayList speedValues = new Gson().fromJson(sceneObject.getJSONArray("speedValues").toString(), new TypeToken<List<Integer>>(){}.getType());
+                    ArrayList movementValues = new Gson().fromJson(sceneObject.getJSONArray("movementValues").toString(), new TypeToken<List<Integer>>(){}.getType());
+                    String name = sceneObject.getString("name");
+                    String status = sceneObject.getString("status");
+
+                    FocusScene recoveredFocusScene = new FocusScene(status, name, speedValues, movementValues);
+                    sceneListAdapter.add(recoveredFocusScene);
+                }
+            } catch (JSONException e) {
+
+            }
+        }
+
+        // update list
+        sceneListAdapter.notifyDataSetChanged();
+
+
+        /*
+        * Focus Speed Slider - Change Listener
+        *
+        * Map value 0-100 to a stepper motor speed range of 49 to 57.
+        * Convert to byte value and save in currentSpeed.
+        * */
         realtimeFocusSpeedSlider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
             @Override
@@ -214,6 +269,9 @@ public class DeviceControlActivity extends FragmentActivity implements RecordSce
             }
         });
 
+        /*
+        * Calibration set Minimum - Click Listener
+        * */
         calibrationSetMinButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -223,6 +281,10 @@ public class DeviceControlActivity extends FragmentActivity implements RecordSce
             }
         });
 
+
+        /*
+        * Calibration set Maximum - Click Listener
+        * */
         calibrationSetMaxButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -232,6 +294,11 @@ public class DeviceControlActivity extends FragmentActivity implements RecordSce
             }
         });
 
+
+        /*
+        * Reconnect
+        * !!!NOT WORKING YET!!!
+        * */
         reconnectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -245,7 +312,10 @@ public class DeviceControlActivity extends FragmentActivity implements RecordSce
         });
 
 
-
+        /*
+        * Recorded Scenes List - Click Listener
+        * Select clicked element and show name of selected element
+        * */
         recordedScenesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -255,12 +325,17 @@ public class DeviceControlActivity extends FragmentActivity implements RecordSce
 
                     selectedFocusScene = ((FocusScene) sceneListAdapter.getItem(position));
 
-                    Toast toast = Toast.makeText(getApplicationContext(), "enabled", Toast.LENGTH_LONG);
+                    Toast toast = Toast.makeText(getApplicationContext(), "Scene selected", Toast.LENGTH_LONG);
                     toast.show();
                 }
             }
         });
 
+
+        /*
+        * Focus Out - Touch Listener
+        * (Touch Listener allows the button to keep triggering the event when pressed)
+        * */
         focusOutButton.setOnTouchListener(new View.OnTouchListener() {
 
             @Override
@@ -280,6 +355,10 @@ public class DeviceControlActivity extends FragmentActivity implements RecordSce
         });
 
 
+        /*
+        * Focus In - Touch Listener
+        * (Touch Listener allows the button to keep triggering the event when pressed)
+        * */
         focusInButton.setOnTouchListener(new View.OnTouchListener() {
 
             @Override
@@ -297,33 +376,58 @@ public class DeviceControlActivity extends FragmentActivity implements RecordSce
             }
         });
 
+        /*
+        * Record Button - Click Listener
+        * (Single Click triggered)
+        * */
         recordButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!isRecording) {
 
+                /*
+                * If not isRecording,
+                * show a newSceneDialog to create a new scene
+                * */
+                if (!isRecording) {
                     DialogFragment newSceneDialog = new RecordSceneDialogFragment();
                     newSceneDialog.show(getFragmentManager(), "new");
-
-
                 } else {
+                    /*
+                    * If isRecording, stop recording.
+                    * - Change drawable back to record graphic.
+                    * - Set status of list entry to <scene length> seconds
+                    * - Update list
+                    * */
                     isRecording = false;
                     recordButton.setImageResource(R.drawable.record);
                     currentFocusScene.setStatus(currentFocusScene.getSpeedValues().size() * EXECUTION_INTERVAL / 1000 + "s");
                     sceneListAdapter.notifyDataSetChanged();
 
-                    Log.d("ATH", currentFocusScene.getMovementValues().toString());
-                    Log.d("ATH", currentFocusScene.getSpeedValues().toString());
                     FocusScene recordedScene = currentFocusScene;
 
-                    // stop recordingScene
+                    SharedPreferences savedScenes = getSharedPreferences(PREFS_SCENES, 0);
+                    SharedPreferences.Editor editor = savedScenes.edit();
+
+                    String recordedScenesJson = new Gson().toJson(sceneListAdapter.scenes);
+                    editor.putString(SCENE_LIST, recordedScenesJson);
+
+                    // Commit the edits!
+                    editor.commit();
                 }
             }
         });
 
+        /*
+        * Play Button - Click Listener
+        * (Single Click triggered)
+        * */
         playButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                /*
+                * set isPlayingScene true,
+                * if a scene is selected
+                * */
                 if (null != selectedFocusScene) {
                     isPlayingScene = true;
                 }
