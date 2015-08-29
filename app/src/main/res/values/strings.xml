@@ -60,6 +60,9 @@
     <string name="please_enter_name">Please enter a scene name:</string>
     <string name="apply">Start recording</string>
     <string name="cancel">Cancel</string>
+    <string name="selected_scene">Selected Scene:</string>
+    <string name="none">none</string>
+    <string name="currently_recording">recording</string>
 
 
 

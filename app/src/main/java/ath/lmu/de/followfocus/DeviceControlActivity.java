@@ -28,18 +28,16 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.math.BigInteger;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -49,9 +47,11 @@ public class DeviceControlActivity extends FragmentActivity implements RecordSce
     public static final String EXTRAS_DEVICE_NAME = "DEVICE_NAME";
     public static final String EXTRAS_DEVICE_ADDRESS = "DEVICE_ADDRESS";
     private final long EXECUTION_INTERVAL = 50; // milliseconds
+    private boolean isSceneSelected = false;
 
 
     private TextView mConnectionState;
+    private TextView selectedSceneLabel;
     private String mDeviceName;
     private String mDeviceAddress;
     private BluetoothLeService mBluetoothLeService;
@@ -66,13 +66,17 @@ public class DeviceControlActivity extends FragmentActivity implements RecordSce
     private boolean mConnected = false;
     private ExpandableHeightListView recordedScenesList;
     private SceneListAdapter sceneListAdapter;
-    private FocusScene currentScene;
+    private FocusScene currentFocusScene;
+    private FocusScene selectedFocusScene;
 
     // current speed to be sent to arduino every EXECUTION_INTERVAL seconds
     private byte currentSpeed = 0;
     private byte currentDirection = 0;
 
-    private Boolean recording = false;
+    private int currentSceneFrame = 0;
+
+    private boolean isRecording = false;
+    private boolean isPlayingScene = false;
 
     // Code to manage Service lifecycle.
     private final ServiceConnection mServiceConnection = new ServiceConnection() {
@@ -157,6 +161,7 @@ public class DeviceControlActivity extends FragmentActivity implements RecordSce
         recordedScenesList = (ExpandableHeightListView) findViewById(R.id.listView_recordedScenes);
         recordButton = (ImageButton) findViewById(R.id.button_record);
         playButton = (ImageButton) findViewById(R.id.button_play);
+        selectedSceneLabel = (TextView) findViewById(R.id.textView_selectedScene);
 
         // Sets up UI references.
         mConnectionState = (TextView) findViewById(R.id.connection_state);
@@ -164,6 +169,10 @@ public class DeviceControlActivity extends FragmentActivity implements RecordSce
         TextView activityTitle = (TextView) findViewById(R.id.textView_connectedDeviceName);
         activityTitle.setText(mDeviceName);
 
+        if (!isSceneSelected) {
+            playButton.setEnabled(false);
+            selectedSceneLabel.setText(getString(R.string.selected_scene) + " " + getString(R.string.none));
+        }
 
         Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
         bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
@@ -237,6 +246,21 @@ public class DeviceControlActivity extends FragmentActivity implements RecordSce
 
 
 
+        recordedScenesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (!isRecording) {
+                    playButton.setEnabled(true);
+                    selectedSceneLabel.setText(getString(R.string.selected_scene) + " " + ((FocusScene) sceneListAdapter.getItem(position)).getName());
+
+                    selectedFocusScene = ((FocusScene) sceneListAdapter.getItem(position));
+
+                    Toast toast = Toast.makeText(getApplicationContext(), "enabled", Toast.LENGTH_LONG);
+                    toast.show();
+                }
+            }
+        });
+
         focusOutButton.setOnTouchListener(new View.OnTouchListener() {
 
             @Override
@@ -276,24 +300,33 @@ public class DeviceControlActivity extends FragmentActivity implements RecordSce
         recordButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!recording) {
+                if (!isRecording) {
 
                     DialogFragment newSceneDialog = new RecordSceneDialogFragment();
                     newSceneDialog.show(getFragmentManager(), "new");
 
 
                 } else {
-                    recording = false;
+                    isRecording = false;
                     recordButton.setImageResource(R.drawable.record);
-                    currentScene.setStatus(currentScene.getSpeedValues().size() * EXECUTION_INTERVAL / 1000 + "s");
+                    currentFocusScene.setStatus(currentFocusScene.getSpeedValues().size() * EXECUTION_INTERVAL / 1000 + "s");
                     sceneListAdapter.notifyDataSetChanged();
 
-                    FocusScene recordedScene = currentScene;
+                    Log.d("ATH", currentFocusScene.getMovementValues().toString());
+                    Log.d("ATH", currentFocusScene.getSpeedValues().toString());
+                    FocusScene recordedScene = currentFocusScene;
 
-                    // stop recording
+                    // stop recordingScene
                 }
+            }
+        });
 
-
+        playButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (null != selectedFocusScene) {
+                    isPlayingScene = true;
+                }
             }
         });
 
@@ -311,14 +344,38 @@ public class DeviceControlActivity extends FragmentActivity implements RecordSce
             public void run() {
                 handler.post(new Runnable() {
                     public void run() {
-                        mBluetoothLeService.writeByte(currentDirection);
-                        mBluetoothLeService.writeByte(currentSpeed);
 
-                        // if recording, write values into FocusScene object
-                        if (recording) {
-                            if (null != currentScene) {
-                                currentScene.addMovementValue(currentDirection);
-                                currentScene.addSpeedValue(currentSpeed);
+                        if (!isPlayingScene) {
+                            mBluetoothLeService.writeByte(currentDirection);
+                            mBluetoothLeService.writeByte(currentSpeed);
+
+                            // if scene is currently recording, write values into FocusScene object
+                            if (isRecording) {
+                                if (null != currentFocusScene) {
+                                    currentFocusScene.addMovementValue(currentDirection);
+                                    currentFocusScene.addSpeedValue(currentSpeed);
+                                }
+                            }
+                        } else { // if recorded scene is being played, send recorded values
+                            Integer speed = selectedFocusScene.getSpeedValues().get(currentSceneFrame);
+                            Integer direction = selectedFocusScene.getMovementValues().get(currentSceneFrame);
+
+                            final BigInteger bi_speed = BigInteger.valueOf(speed);
+                            final byte[] byte_speed = bi_speed.toByteArray();
+
+                            final BigInteger bi_direction = BigInteger.valueOf(direction);
+                            final byte[] byte_direction = bi_direction.toByteArray();
+
+                            mBluetoothLeService.writeByte(byte_speed[0]);
+                            mBluetoothLeService.writeByte(byte_direction[0]);
+
+                            Log.d("ATH", speed.toString());
+
+                            if (currentSceneFrame < selectedFocusScene.getSpeedValues().size()-1) {
+                                currentSceneFrame++;
+                            } else {
+                                currentSceneFrame = 0;
+                                isPlayingScene = false;
                             }
                         }
                     }
@@ -370,14 +427,12 @@ public class DeviceControlActivity extends FragmentActivity implements RecordSce
 
     public void onNewScenePositiveClick(String name) {
         //add new scene
-        currentScene = new FocusScene(name);
-        currentScene.setStatus("recording");
-        sceneListAdapter.add(currentScene);
+        currentFocusScene = new FocusScene(name);
+        currentFocusScene.setStatus(getString(R.string.currently_recording));
+        sceneListAdapter.add(currentFocusScene);
         sceneListAdapter.notifyDataSetChanged();
 
-        recording = true;
+        isRecording = true;
         recordButton.setImageResource(R.drawable.stop);
-
-
     }
 }
