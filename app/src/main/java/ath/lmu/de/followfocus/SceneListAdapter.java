@@ -65,6 +65,7 @@ public class SceneListAdapter extends BaseAdapter {
         sceneLength = (TextView) view.findViewById(R.id.textView_recording_length);
 
         sceneName.setText(scenes.get(position).getName());
+        sceneLength.setText(scenes.get(position).getStatus());
 
 
 

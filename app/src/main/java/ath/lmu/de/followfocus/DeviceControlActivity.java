@@ -66,6 +66,7 @@ public class DeviceControlActivity extends FragmentActivity implements RecordSce
     private boolean mConnected = false;
     private ExpandableHeightListView recordedScenesList;
     private SceneListAdapter sceneListAdapter;
+    private FocusScene currentScene;
 
     // current speed to be sent to arduino every EXECUTION_INTERVAL seconds
     private byte currentSpeed = 0;
@@ -284,6 +285,10 @@ public class DeviceControlActivity extends FragmentActivity implements RecordSce
                 } else {
                     recording = false;
                     recordButton.setImageResource(R.drawable.record);
+                    currentScene.setStatus(currentScene.getSpeedValues().size() * EXECUTION_INTERVAL / 1000 + "s");
+                    sceneListAdapter.notifyDataSetChanged();
+
+                    FocusScene recordedScene = currentScene;
 
                     // stop recording
                 }
@@ -309,8 +314,12 @@ public class DeviceControlActivity extends FragmentActivity implements RecordSce
                         mBluetoothLeService.writeByte(currentDirection);
                         mBluetoothLeService.writeByte(currentSpeed);
 
+                        // if recording, write values into FocusScene object
                         if (recording) {
-                            // new FocusScene..
+                            if (null != currentScene) {
+                                currentScene.addMovementValue(currentDirection);
+                                currentScene.addSpeedValue(currentSpeed);
+                            }
                         }
                     }
                 });
@@ -361,11 +370,14 @@ public class DeviceControlActivity extends FragmentActivity implements RecordSce
 
     public void onNewScenePositiveClick(String name) {
         //add new scene
-        Log.d("ATH", "SUCCESS " + name);
-        sceneListAdapter.add(new FocusScene(name));
+        currentScene = new FocusScene(name);
+        currentScene.setStatus("recording");
+        sceneListAdapter.add(currentScene);
         sceneListAdapter.notifyDataSetChanged();
 
         recording = true;
         recordButton.setImageResource(R.drawable.stop);
+
+
     }
 }
