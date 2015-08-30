@@ -1,0 +1,192 @@
+\documentclass{sigchi}
+
+% Use this command to override the default ACM copyright statement (e.g. for preprints). 
+% Consult the conference website for the camera-ready copyright statement.
+
+
+%% EXAMPLE BEGIN -- HOW TO OVERRIDE THE DEFAULT COPYRIGHT STRIP -- (July 22, 2013 - Paul Baumann)
+% \toappear{Permission to make digital or hard copies of all or part of this work for personal or classroom use is 	granted without fee provided that copies are not made or distributed for profit or commercial advantage and that copies bear this notice and the full citation on the first page. Copyrights for components of this work owned by others than ACM must be honored. Abstracting with credit is permitted. To copy otherwise, or republish, to post on servers or to redistribute to lists, requires prior specific permission and/or a fee. Request permissions from permissions@acm.org. \\
+% {\emph{CHI'14}}, April 26--May 1, 2014, Toronto, Canada. \\
+% Copyright \copyright~2014 ACM ISBN/14/04...\$15.00. \\
+% DOI string from ACM form confirmation}
+%% EXAMPLE END -- HOW TO OVERRIDE THE DEFAULT COPYRIGHT STRIP -- (July 22, 2013 - Paul Baumann)
+
+
+% Arabic page numbers for submission. 
+% Remove this line to eliminate page numbers for the camera ready copy
+% \pagenumbering{arabic}
+
+
+% Load basic packages
+\usepackage{balance}  % to better equalize the last page
+\usepackage{graphics} % for EPS, load graphicx instead
+\usepackage{times}    % comment if you want LaTeX's default font
+\usepackage{url}      % llt: nicely formatted URLs
+
+% llt: Define a global style for URLs, rather that the default one
+\makeatletter
+\def\url@leostyle{%
+  \@ifundefined{selectfont}{\def\UrlFont{\sf}}{\def\UrlFont{\small\bf\ttfamily}}}
+\makeatother
+\urlstyle{leo}
+
+
+% To make various LaTeX processors do the right thing with page size.
+\def\pprw{8.5in}
+\def\pprh{11in}
+\special{papersize=\pprw,\pprh}
+\setlength{\paperwidth}{\pprw}
+\setlength{\paperheight}{\pprh}
+\setlength{\pdfpagewidth}{\pprw}
+\setlength{\pdfpageheight}{\pprh}
+
+% Make sure hyperref comes last of your loaded packages, 
+% to give it a fighting chance of not being over-written, 
+% since its job is to redefine many LaTeX commands.
+\usepackage[pdftex]{hyperref}
+\hypersetup{
+pdftitle={Follow-focus with Arduino},
+pdfauthor={LMU Munich},
+pdfkeywords={SIGCHI, proceedings, archival format},
+bookmarksnumbered,
+pdfstartview={FitH},
+colorlinks,
+citecolor=black,
+filecolor=black,
+linkcolor=black,
+urlcolor=black,
+breaklinks=true,
+}
+
+% create a shortcut to typeset table headings
+\newcommand\tabhead[1]{\small\textbf{#1}}
+
+
+% End of preamble. Here it comes the document.
+\begin{document}
+
+\title{Follow-focus with Arduino}
+
+\numberofauthors{3}
+\author{
+  \alignauthor Christian Guerrero\\
+    \affaddr{Ludwig Maximilian Universit\"at, M\"unchen, Munich, Germany}\\
+    \email{christian.guerrero@campus.lmu.de}\\
+  \alignauthor Arthur Moufounda\\
+    \affaddr{\'{E}cole Sup\'{e}rieure Des Technologies Industrielles Avanc\'{e}es, Bidart, France}\\
+    \email{a.moufounda@net.estia.fr}\\
+  \alignauthor Alexander Schenker\\
+    \affaddr{Ludwig Maximilian Universit\"at, M\"unchen, Munich, Germany}\\
+    \email{alexander.schenker@campus.lmu.de}\\
+}
+
+\maketitle
+
+\begin{abstract}
+
+\end{abstract}
+
+\keywords{
+	Guides; instructions; author's kit; conference publications;
+	keywords should be separated by a semi-colon. \newline
+}
+
+\section{Motivation and Background}
+
+\subsection{General Motivation}
+In the field of cinema for instance, we success to semi-automatized the travelling. What we want to do is doing the same with the focus pulling, using the follow focus.
+
+Normally, manual control is required in order to zoom and to keep the focus on the desired object. In classical productions, the focus puller (or first Assistant Camera) is a dedicated position, whose job it is to keep the focus, according to the cinematographers instructions. As there is no way to correct a falsely set focus in post-production, it is considered one of the hardest jobs on a film set. So, the solution would be to create a super-precise way of focusing an object, which would excluded a possible human error.
+By using a wireless motion controller and setting different sequences of movement then remembering it, the result would be extremely precise and repetable ; another advantage would also be that the movement would fluider, with a direct speed control and linearity.
+That what’s we aim in our project. Combined with the precedent travelling work, it would permit to create a follow focus of an object, keeping the best focal distance each second, without direct manual interaction with the camera.
+This project could have utility in application such recording scenes in an impracticable environment for a human for instance.
+
+
+\subsubsection{General Description of the Topic}
+
+\subsubsection{State of the Art in Follow Focus}
+
+So, which technology are used in the field of follow focus ?
+Andrea Motion Focus
+First, we can speak about the Andra Motion Focus. This company developed a follow system with a very high accuracy. Using a portable and easy to set up magnetic mo-cap system, it’s able to very accurately track subjects and cameras in real time and use that data to drive a lens control motor.  The mo-cap side of the system uses very small sensors which can be mounted to the performer beneath clothing, just like a lavalier microphone. The user can then decide where they want the focal point, relative to that sensor, and the system does the rest. 
+There are two ways to interface with the system. The basic approach to use an iPad. Another option is to use the hand unit (The Arc).
+The system can also be used to “save” positions of non moving objects in any given area, and, for dyed in the wool focus pullers who want to do it all manually, the hand unit streams live distance data of any chosen subject or object whether it’s moving or stationary.  You can choose to let the system pull focus for you, allowing you to simply decide when and how fast to move between subjects, or you can just use the data to pull manually.
+
+Show Focus
+
+Designed to facilitate the duties of the on-set focus-puller, Show-Focus renders a physical representation of the invisible plane of focus so that the precise focal point can be deduced, and captured, at any time. The model is compromised of two components, communicable through a wireless connection: the camera module and the controller. The camera module, which is attached to the body of the shooting camera, provides a real-time 3D map of what is being filmed, while also controlling the focus ring through a motorized mechanism. The controller — as its name suggests — displays the map and allows the focus-puller to oversee the movements of the focus ring.
+
+PROAIM Camera Follow Focus X1 (FF-X1)
+
+On the market, you can find a lot of product like this one. Using gear driven designed, the FF-X1 ensures smooth accurate emphasis over your subject. Designed to give slip-free, accurate and repeatable focus movement on a wide range of cameras are possible.
+
+
+\subsection{Background}
+
+\subsubsection{Vision}
+
+\subsubsection{Current Research at LMU}
+
+\section{Solution}
+
+\subsection{Our Follow Focus Approach}
+Different approach have been made for the Follow Focus, from the project financed by Kick Starter to the DIY Wireless Arduino stepper controlled by an encoder. 
+
+What we want is a device adaptable to all type of camera. We also want a remote controller, which will be the interface between the user and the camera. A step motor would ensure the focus pulling and an electronical structure would control the motor depending of the received orders from the remote controller.
+Now, let’s see the functionality we are looking for:
+\begin{itemize}
+  \item The range of the focus should be possible to adjust
+  \item The speed of the focus should be possible to adjust
+  \item We want an auto rewind
+  \item We want a real time pulling focus
+  \item We want to be able to record several motion sequence. Useful if we have several objects we want to focus on
+\end{itemize}
+
+\subsection{Methods}
+Our technologic choices have been realized thanks to different thoughs:
+\begin{itemize}
+
+\item First of all, we want our follow focus device to be portable. The elements chosen have to be small, low energy powered and embeddable.
+\item For the Wireless control, the Bluetooth have been kept because the precedent project worked with a Bluetooth too, and also because it exists a lot of library and easy code to use the Bluetooth.
+\item A step motor is used because it can be very precise, we can know the number of rotation we are doing, and because of it small inertia.
+\item The remote controller will be our phone. Thus, anyone could easily control the follow focus device by downloading the app we developped especially for this use
+\end{itemize}
+
+
+\subsubsection{Electrical Engineering}
+
+Arduino Nano
+ 
+It’s the same as a classic Arduino Uno, but her really small size allow him to be easily embedded. The main program will be in his chip and can be easily rewrite thanks to the software furnished with it.
+A Bluetooth module
+ 
+This Bluetooth module will realize the wireless control of the step motor. To establish a Bluetooth connection, it requires a transmitter and a receptor. This module will play the role of receptor. Each byte received by it will be send to the Arduino Nano.
+A step motor
+ 
+Directly connected with the stepper driver, the step motor will control the rotation of a gear, which will itself control the focus of the camera. 
+a stepper driver
+ 
+Having a motor his good. Adapting it to and electronical system is better. The stepper driver will protect the Arduino Nano from the different electrical damages that may be caused by the sudden increase of intensity causeed by the motor, but also allowing him to turn in both ways.
+Battery
+ 
+None of the different electronical parts are passive. To make them work, we need electric energy ; but we also want our global system  to be portable. We will so use different sets of battery, because the Arduino and the step motor necessitate to be powered differently, respectively with at least 5V and 12V.
+
+
+\subsubsection{Case Modeling}
+
+The mechanical parts will be designed with CATIA, the 3D modelling software from Dassault System. They will be create by 3D-printing.
+The box is composed of three distinguished part. The first part is the place which is welcoming the electronical parts.
+The same space exists on the other side of the box and is designed for the battery.
+The big hole in front of the box is desgined for the motor. The stripes on the sides are here to evacuate the heat produced by the motor when it’s working.
+Two holes drilled in strategic places allow the wires from the motor and from the battery to connect with the rest of the electronics
+
+
+\subsubsection{App Development}
+
+\section{Discussion & Next Steps}
+
+\section{Conclusion}
+
+\bibliographystyle{acm-sigchi}
+\bibliography{sample}
+\end{document}
