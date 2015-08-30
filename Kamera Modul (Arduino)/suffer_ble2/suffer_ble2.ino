@@ -1,10 +1,13 @@
 /*********************************************************************
 This is an example for our nRF8001 Bluetooth Low Energy Breakout
+
   Pick one up today in the adafruit shop!
   ------> http://www.adafruit.com/products/1697
+
 Adafruit invests time and resources providing this open source code,
 please support Adafruit and open-source hardware by purchasing
 products from Adafruit!
+
 Written by Kevin Townsend/KTOWN  for Adafruit Industries.
 MIT license, check LICENSE for more information
 All text above, and the splash screen below must be included in any redistribution
@@ -37,8 +40,12 @@ Adafruit_BLE_UART BTLEserial = Adafruit_BLE_UART(ADAFRUITBLE_REQ, ADAFRUITBLE_RD
 AccelStepper stepper(1, 8, 7);
 int enablePin = 3;
 int MinPulseWidth = 50; //too low and the motor will stall, too high and it will slow it down
-int minStepSize = 1;
-int maxStepSize = 1600;
+int motorStepsPerRev = 200; 
+int easyDriverMicroSteps = 8; 
+int rotaryEncoderSteps = 10; 
+int stepsPerRotaryStep;
+int minSpeed = 100;
+int maxSpeed = 10000;
 
 //Sleep to save energy
 long previousMillis = 0;
@@ -61,6 +68,8 @@ void setup(void)
   stepper.setAcceleration(100000); 
   stepper.setSpeed(50000); 
   pinMode(enablePin, OUTPUT); 
+  stepsPerRotaryStep = (motorStepsPerRev * easyDriverMicroSteps) / rotaryEncoderSteps;
+
   
   while (!Serial); // Leonardo/Micro should wait for serial init
   Serial.println(F("Adafruit Bluefruit Low Energy nRF8001 Print echo demo"));
@@ -98,7 +107,7 @@ void loop()
       dataReceive = BTLEserial.read();
       Serial.println(dataReceive);
       react(); //function to react to input   
-
+      int motorMove = (encoderValue * stepsPerRotaryStep);  
       stepper.run();
       stepper.moveTo(encoderValue);
     }
@@ -116,15 +125,16 @@ void react()
 {
   if (dataReceive > 48 && dataReceive < 58)  //[1-9]-Key
   {
-    stepSize = map(dataReceive, 49, 57, minStepSize, maxStepSize);
+    speedValue = map(dataReceive, 49, 57, minSpeed, maxSpeed);
+    stepper.setMaxSpeed(speedValue);
   } 
   else if (dataReceive == 43) //[+]-Key
   {
-    encoderValue += stepSize;
+    encoderValue ++;
   }
   else if (dataReceive == 45)  //[-]-Key
   {
-    encoderValue -= stepSize;
+    encoderValue --;
   }  
   else if (dataReceive == 97 || dataReceive == 122)
   {
@@ -147,3 +157,5 @@ void react()
     BTLEserial.write(sendbuffer, sendbuffersize);
   }
 } 
+
+
