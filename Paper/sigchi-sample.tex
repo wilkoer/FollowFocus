@@ -22,6 +22,7 @@
 \usepackage{graphics} % for EPS, load graphicx instead
 \usepackage{times}    % comment if you want LaTeX's default font
 \usepackage{url}      % llt: nicely formatted URLs
+\usepackage{listings}
 
 % llt: Define a global style for URLs, rather that the default one
 \makeatletter
@@ -130,60 +131,98 @@ On the market, you can find a lot of product like this one. Using gear driven de
 \section{Solution}
 
 \subsection{Our Follow Focus Approach}
-Different approach have been made for the Follow Focus, from the project financed by Kick Starter to the DIY Wireless Arduino stepper controlled by an encoder. 
+Our solution is based on the ideas of \textit{DIY Follow Focus} and \textit{Soffer Follow Focus}.
 
-What we want is a device adaptable to all type of camera. We also want a remote controller, which will be the interface between the user and the camera. A step motor would ensure the focus pulling and an electronical structure would control the motor depending of the received orders from the remote controller.
-Now, let’s see the functionality we are looking for:
+What we want is a device adaptable to all types of camera. We also want a remote controller, which will work as interface between user and camera. A step motor attached to a gear would ensure the focus pulling depending on the received signal from the remote controller.
+Now those are the functionalities we want to implement:
 \begin{itemize}
-  \item The range of the focus should be possible to adjust
-  \item The speed of the focus should be possible to adjust
-  \item We want an auto rewind
-  \item We want a real time pulling focus
-  \item We want to be able to record several motion sequence. Useful if we have several objects we want to focus on
+  \item Real time focus pulling (in and out).
+  \item The speed of focus change should be adjustable.
+  \item The camera's range should be configurable.
+  \item We want to be able to record several motion sequences and play them back.
 \end{itemize}
 
 \subsection{Methods}
-Our technologic choices have been realized thanks to different thoughs:
-\begin{itemize}
-
-\item First of all, we want our follow focus device to be portable. The elements chosen have to be small, low energy powered and embeddable.
-\item For the Wireless control, the Bluetooth have been kept because the precedent project worked with a Bluetooth too, and also because it exists a lot of library and easy code to use the Bluetooth.
-\item A step motor is used because it can be very precise, we can know the number of rotation we are doing, and because of it small inertia.
-\item The remote controller will be our phone. Thus, anyone could easily control the follow focus device by downloading the app we developped especially for this use
-\end{itemize}
+To realize our aims we decided to develop an Arduino App for input. It sends via Bluetooth a perpetual signal to a BTLE module connected to an Arduino Nano. The Arduino processes those bytes and sends commands to a StepperDriver connected to a AccelStepper. 
 
 
 \subsubsection{Electrical Engineering}
+Top of all, we wanted our follow focus to be portable. Therefor the elements had to be small, low energy powered and easily embeddable. These challenges had to be tackled in the planning phase of the process. So at first we had to decide between different technologies in order to meet our aims:
+\begin{itemize}
+\item The remote controller would be a smart phone. Thus, anyone could easily control the follow focus device by downloading our application in the app store.
+\begin{figure}
+	\includegraphics[width=0.4\textwidth]{nano.png}
+\end{figure} 
+\item For our requirements an Arduino Nano is more than sufficient. It is small and consumes only little.
+\begin{figure}
+	\includegraphics[width=0.4\textwidth]{btle.jpg}
+\end{figure} 
+\item For the Wireless control we use Bluetooth LE because of its low energy, easy implementation and also because there is a large web community and many examples available online.
+\begin{figure}
+	\includegraphics[width=0.4\textwidth]{stepper.jpg}
+\end{figure} 
+\item A stepper motor is used because it works more precise and faster than a servo and has only small enertia. Also with stepper we always know the exact amount of rotation we have to apply.
+\begin{figure}
+	\includegraphics[width=0.4\textwidth]{driver.png}
+\end{figure} 
+\item Having a motor is good. Adapting it to an electrical system is better. The stepper driver will protect the Arduino Nano from different electrical damages that may be caused by the sudden increase of intensity caused by the motor. It also allows to turn in both directions.
+\item The AccelStepper library for Arduino is very useful as it makes the API never to block and supports very slow speeds. Also it helps to easily apply acceleration.
+\item None of the electronic parts is passive. To make them all work, we need electric energy, but we also want our global system to be portable. Therefor we will use different sets of battery, because the Arduino and the step motor need to be powered separately, at least 5V and 12V respectively.
+\end{itemize}
+In the attached code of the Arduino we see how the components work together.
+\begin{lstlisting}
+if (status == ACI_EVT_CONNECTED) 
+  {
+    stepper.enableOutputs();
+    stepper.run();
+    if (BTLEserial.available()>0) 
+    {
+      digitalWrite (enablePin, LOW);
+      previousMillis = millis();
+      dataReceive = BTLEserial.read();
+      react(); //function to react to input   
+      stepper.run();
+      stepper.moveTo(encoderValue);
+    } 
+	...
 
-Arduino Nano
- 
-It’s the same as a classic Arduino Uno, but her really small size allow him to be easily embedded. The main program will be in his chip and can be easily rewrite thanks to the software furnished with it.
-A Bluetooth module
- 
-This Bluetooth module will realize the wireless control of the step motor. To establish a Bluetooth connection, it requires a transmitter and a receptor. This module will play the role of receptor. Each byte received by it will be send to the Arduino Nano.
-A step motor
- 
-Directly connected with the stepper driver, the step motor will control the rotation of a gear, which will itself control the focus of the camera. 
-a stepper driver
- 
-Having a motor his good. Adapting it to and electronical system is better. The stepper driver will protect the Arduino Nano from the different electrical damages that may be caused by the sudden increase of intensity causeed by the motor, but also allowing him to turn in both ways.
-Battery
- 
-None of the different electronical parts are passive. To make them work, we need electric energy ; but we also want our global system  to be portable. We will so use different sets of battery, because the Arduino and the step motor necessitate to be powered differently, respectively with at least 5V and 12V.
+void react()
+{
+  if (dataReceive > 48 && dataReceive < 58)  //[1-9]-Key
+  {
+    speedValue = map(dataReceive, 49, 57,
+    	minSpeedValue, maxSpeedValue);
+    stepper.setMaxSpeed(speedValue);
+    Serial.println(speedValue);
+  } 
+  else if (dataReceive == 43) //[+]-Key
+  {
+    encoderValue += stepSize;
+  }
+  else if (dataReceive == 45)  //[-]-Key
+  {
+    encoderValue -= stepSize;
+  }    
+  else if (dataReceive == 0) {
+    encoderValue = stepper.currentPosition();
+  }
+  ...
+\end{lstlisting}
 
-
+ 
 \subsubsection{Case Modeling}
+\begin{figure}
+	\center
+	\includegraphics[width=0.4\textwidth]{case.png}
+\end{figure} 
+For building our case we faced two questions. Which size and which technology - 3D-printing or laser cutting. First we designed the parts with CATIA, the 3D modeling software from Dassault System. But the 3D-model took a lot of printing time and in the end they felt very unstable. So we used laser cutting on 3mm wood in the end which is to a very nice looking and useful material. Also for redesigning and resizing this easy manipulative material proved to be best.
+The box is composed of three compartments. The first part is the place which houses the electronic parts. A similar space exists underneath and is designed for the batteries, to allow exclusive access. The back of the case has two nicks which allow to open the backside easily when a battery exchange is due. In the front of the box is a place for the stepper motor, which can be screwed in. The notches on the sides are supposed to evacuate the heat produced by the motor when it is at work. Two holes drilled into the partition walls allow wires to connect the Arduino, stepper and battery compartments.
 
-The mechanical parts will be designed with CATIA, the 3D modelling software from Dassault System. They will be create by 3D-printing.
-The box is composed of three distinguished part. The first part is the place which is welcoming the electronical parts.
-The same space exists on the other side of the box and is designed for the battery.
-The big hole in front of the box is desgined for the motor. The stripes on the sides are here to evacuate the heat produced by the motor when it’s working.
-Two holes drilled in strategic places allow the wires from the motor and from the battery to connect with the rest of the electronics
 
 
 \subsubsection{App Development}
 
-\section{Discussion & Next Steps}
+\section{Discussion \& Next Steps}
 
 \section{Conclusion}
 
