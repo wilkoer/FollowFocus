@@ -109,7 +109,7 @@ void loop()
       react(); //function to react to input   
       int motorMove = (encoderValue * stepsPerRotaryStep);  
       stepper.run();
-      stepper.moveTo(encoderValue);
+      stepper.moveTo(motorMove);
     }
     else
     {
