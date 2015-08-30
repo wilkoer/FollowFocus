@@ -1,10 +1,13 @@
 /*********************************************************************
 This is an example for our nRF8001 Bluetooth Low Energy Breakout
+
   Pick one up today in the adafruit shop!
   ------> http://www.adafruit.com/products/1697
+
 Adafruit invests time and resources providing this open source code,
 please support Adafruit and open-source hardware by purchasing
 products from Adafruit!
+
 Written by Kevin Townsend/KTOWN  for Adafruit Industries.
 MIT license, check LICENSE for more information
 All text above, and the splash screen below must be included in any redistribution
@@ -37,8 +40,8 @@ Adafruit_BLE_UART BTLEserial = Adafruit_BLE_UART(ADAFRUITBLE_REQ, ADAFRUITBLE_RD
 AccelStepper stepper(1, 8, 7);
 int enablePin = 3;
 int MinPulseWidth = 50; //too low and the motor will stall, too high and it will slow it down
-int minStepSize = 1;
-int maxStepSize = 1600;
+int minSpeedValue = 100;
+int maxSpeedValue = 3500;
 
 //Sleep to save energy
 long previousMillis = 0;
@@ -47,10 +50,10 @@ int sleepTimer = 5000;
 //values will change
 volatile long encoderValue = 0; 
 byte dataReceive = 0;
-int speedValue = 10000;
+int speedValue = 1;
 int highEndMark = 500000;
 int lowEndMark = -500000;
-int stepSize = 1;
+int stepSize = 200;
 
 
 void setup(void)
@@ -90,13 +93,14 @@ void loop()
   
   if (status == ACI_EVT_CONNECTED) 
   {
+    stepper.enableOutputs();
     stepper.run();
     if (BTLEserial.available()>0) 
     {
       digitalWrite (enablePin, LOW);
       previousMillis = millis();
       dataReceive = BTLEserial.read();
-      Serial.println(dataReceive);
+      //Serial.println(dataReceive);
       react(); //function to react to input   
 
       stepper.run();
@@ -107,7 +111,10 @@ void loop()
       //Stepper sleep after 5sec of no data
       unsigned long currentMillis = millis ();
       if (currentMillis - previousMillis > sleepTimer)
+      {
         digitalWrite (enablePin, HIGH);
+        stepper.disableOutputs();
+      }
     } 
   }
 }
@@ -116,7 +123,9 @@ void react()
 {
   if (dataReceive > 48 && dataReceive < 58)  //[1-9]-Key
   {
-    stepSize = map(dataReceive, 49, 57, minStepSize, maxStepSize);
+    speedValue = map(dataReceive, 49, 57, minSpeedValue, maxSpeedValue);
+    stepper.setMaxSpeed(speedValue);
+    Serial.println(speedValue);
   } 
   else if (dataReceive == 43) //[+]-Key
   {
@@ -125,7 +134,10 @@ void react()
   else if (dataReceive == 45)  //[-]-Key
   {
     encoderValue -= stepSize;
-  }  
+  }    
+  else if (dataReceive == 0) {
+    encoderValue = stepper.currentPosition();
+  }
   else if (dataReceive == 97 || dataReceive == 122)
   {
     String s = "EndMark";
@@ -138,7 +150,7 @@ void react()
     {
       highEndMark = stepper.currentPosition();
       s = "HighEndMark" + String(highEndMark);
-    }    
+    } 
     // We need to convert the line to bytes, no more than 20 at this time
     uint8_t sendbuffer[20];
     s.getBytes(sendbuffer, 20);
@@ -147,3 +159,5 @@ void react()
     BTLEserial.write(sendbuffer, sendbuffersize);
   }
 } 
+
+
