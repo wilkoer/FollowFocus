@@ -45,7 +45,6 @@ public class DeviceControlActivity extends FragmentActivity implements RecordSce
     private final long EXECUTION_INTERVAL = 50; // milliseconds
     private boolean isSceneSelected = false;
 
-
     private TextView mConnectionState;
     private TextView selectedSceneLabel;
     private String mDeviceName;
@@ -72,6 +71,9 @@ public class DeviceControlActivity extends FragmentActivity implements RecordSce
 
     private boolean isRecording = false;
     private boolean isPlayingScene = false;
+
+    private int lowEndMark = 0;
+    private int highEndMark = 0;
 
     // Code to manage Service lifecycle.
     private final ServiceConnection mServiceConnection = new ServiceConnection() {
@@ -128,6 +130,25 @@ public class DeviceControlActivity extends FragmentActivity implements RecordSce
                         try {
 
                             Log.d("ATH", txValue);
+                            String value = null;
+
+                            if (txValue.contains("HighEndMark")) {
+                                if (txValue.contains("\n")) {
+                                    value = txValue.substring(0, txValue.indexOf("\n"));
+                                }
+                                value = value.replace("HighEndMark", "");
+
+                                highEndMark = Integer.parseInt(value);
+                                Log.d("ATH", highEndMark + "");
+
+                            } else if (txValue.contains("LowEndMark")) {
+                                if (txValue.contains("\n")) {
+                                    value = txValue.substring(0, txValue.indexOf("\n"));
+                                }
+                                value = value.replace("LowEndMark", "");
+                                lowEndMark = Integer.parseInt(value);
+                                Log.d("ATH", lowEndMark + "");
+                            }
 
                         } catch (Exception e) {
                             Log.e(TAG, e.toString());
