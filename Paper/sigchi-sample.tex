@@ -95,11 +95,15 @@ breaklinks=true,
 \section{Motivation and Background}
 
 \subsection{General Motivation}
-In the field of cinema for instance, we success to semi-automatized the travelling. What we want to do is doing the same with the focus pulling, using the follow focus.
+In movie production, especially the part of principal photography is considered one of the most expensive ones. This is, amongst other reasons, due to the often high number of scene takes, that have to be shot. \cite{kcrabb}
+Usually, manual control is required in order to zoom and to keep the focus on the desired object. In classical productions, the focus puller (or first Assistant Camera) is a dedicated position, whose job it is to keep the focus according to the cinematographers instructions. As there is no way to correct a falsely set focus in post-production, it is considered one of the hardest jobs on a film set. \cite{cineman}
 
-Normally, manual control is required in order to zoom and to keep the focus on the desired object. In classical productions, the focus puller (or first Assistant Camera) is a dedicated position, whose job it is to keep the focus, according to the cinematographers instructions. As there is no way to correct a falsely set focus in post-production, it is considered one of the hardest jobs on a film set. So, the solution would be to create a super-precise way of focusing an object, which would excluded a possible human error.
-By using a wireless motion controller and setting different sequences of movement then remembering it, the result would be extremely precise and repetable ; another advantage would also be that the movement would fluider, with a direct speed control and linearity.
-That what’s we aim in our project. Combined with the precedent travelling work, it would permit to create a follow focus of an object, keeping the best focal distance each second, without direct manual interaction with the camera.
+Previous and current research conducted by Ludwig-Maximilian-Universit\"at (LMU) in Munich has come up with the development of a remote controlled camera slider \cite{pmoerwald} and theoretical research on automated camera shots \cite{pburgdorf}. 
+
+Considering the difficulties resulting from the precision required while shooting a film, and the often high number of takes, it is worth thinking about a holistic system, that offers not only automated dolly shots, but also simplyfies the focus pullers' job. 
+
+This paper covers the prototypical development of a remote controlled focus pulling device with the long-term objective to get inegrated into a system, which combines automated dolly shots, focus pulling and camera tilts.
+
 This project could have utility in application such recording scenes in an impracticable environment for a human for instance.
 
 
@@ -107,9 +111,13 @@ This project could have utility in application such recording scenes in an impra
 
 \subsubsection{State of the Art in Follow Focus}
 
-So, which technology are used in the field of follow focus ?
-Andrea Motion Focus
-First, we can speak about the Andra Motion Focus. This company developed a follow system with a very high accuracy. Using a portable and easy to set up magnetic mo-cap system, it’s able to very accurately track subjects and cameras in real time and use that data to drive a lens control motor.  The mo-cap side of the system uses very small sensors which can be mounted to the performer beneath clothing, just like a lavalier microphone. The user can then decide where they want the focal point, relative to that sensor, and the system does the rest. 
+This section gives a brief overview about currently existing technologies in the field of follow focus. 
+
+Andra Motion Focus
+
+Andra Motion Focus is a follow focus hardware system developed by Andra Motion Technologies Inc. 
+
+Using a portable and easy to set up magnetic mo-cap system, it’s able to very accurately track subjects and cameras in real time and use that data to drive a lens control motor.  The mo-cap side of the system uses very small sensors which can be mounted to the performer beneath clothing, just like a lavalier microphone. The user can then decide where they want the focal point, relative to that sensor, and the system does the rest. 
 There are two ways to interface with the system. The basic approach to use an iPad. Another option is to use the hand unit (The Arc).
 The system can also be used to “save” positions of non moving objects in any given area, and, for dyed in the wool focus pullers who want to do it all manually, the hand unit streams live distance data of any chosen subject or object whether it’s moving or stationary.  You can choose to let the system pull focus for you, allowing you to simply decide when and how fast to move between subjects, or you can just use the data to pull manually.
 
@@ -215,7 +223,7 @@ void react()
 	\center
 	\includegraphics[width=0.4\textwidth]{case.png}
 \end{figure} 
-For building our case we faced two questions. Which size and which technology - 3D-printing or laser cutting. First we designed the parts with CATIA, the 3D modeling software from Dassault System. But the 3D-model took a lot of printing time and in the end they felt very unstable. So we used laser cutting on 3mm wood in the end which is to a very nice looking and useful material. Also for redesigning and resizing this easy manipulative material proved to be best.
+For building our case we faced two crucial questions. How can we achieve a small overall size to maintain portability? Which technology can we use to create a case, that is both stable and lightweight? - 3D-printing or laser cutting. First we designed the parts with CATIA, the 3D modeling software from Dassault System. But the 3D-model took a lot of printing time and in the end they felt very unstable. So we used laser cutting on 3mm wood in the end which is to a very nice looking and useful material. Also for redesigning and resizing this easy manipulative material proved to be best.
 The box is composed of three compartments. The first part is the place which houses the electronic parts. A similar space exists underneath and is designed for the batteries, to allow exclusive access. The back of the case has two nicks which allow to open the backside easily when a battery exchange is due. In the front of the box is a place for the stepper motor, which can be screwed in. The notches on the sides are supposed to evacuate the heat produced by the motor when it is at work. Two holes drilled into the partition walls allow wires to connect the Arduino, stepper and battery compartments.
 
 

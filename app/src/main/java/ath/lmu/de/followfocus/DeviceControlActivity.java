@@ -42,7 +42,7 @@ public class DeviceControlActivity extends FragmentActivity implements RecordSce
     public static final String EXTRAS_DEVICE_ADDRESS = "DEVICE_ADDRESS";
     public static final String PREFS_SCENES = "RecordedScenes";
     public static final String SCENE_LIST = "SceneList";
-    private final long EXECUTION_INTERVAL = 50; // milliseconds
+    private final long EXECUTION_INTERVAL = 30; // milliseconds
     private boolean isSceneSelected = false;
 
     private TextView mConnectionState;
@@ -333,6 +333,27 @@ public class DeviceControlActivity extends FragmentActivity implements RecordSce
                     Toast toast = Toast.makeText(getApplicationContext(), "Scene selected", Toast.LENGTH_LONG);
                     toast.show();
                 }
+            }
+        });
+
+         /*
+        * Recorded Scenes List - LongClick Listener
+        * Select clicked element and show name of selected element
+        * */
+        recordedScenesList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+               /* DialogFragment tripDialog = new TripDialogFragment();
+                Bundle args = new Bundle();
+                args.putString("tripMessage", getString(R.string.trip_options) + " \"" + app.getTripList().get(position).getTripName() + "\" " + getString(R.string.trip_options2));
+                args.putString("deleteMessage", getString(R.string.delete_trip) + " \"" + app.getTripList().get(position).getTripName() + "\" " + getString(R.string.delete_trip2));
+                args.putString("tripName", app.getTripList().get(position).getTripName());
+                args.putInt("index", position);
+                tripDialog.setArguments(args);
+                tripDialog.show(getFragmentManager(), "tripOptions");
+
+                return true;         */
+                return false;
             }
         });
 
