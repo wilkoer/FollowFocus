@@ -3,47 +3,64 @@ Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
 The top-level auxiliary file: sigchi-sample.aux
 The style file: acm-sigchi.bst
 Database file #1: sample.bib
-Warning--entry type for "cineman" isn't style-file defined
+Warning--entry type for "dassault" isn't style-file defined
+--line 12 of file sample.bib
+Warning--entry type for "devand" isn't style-file defined
+--line 19 of file sample.bib
+Warning--entry type for "soffer" isn't style-file defined
+--line 33 of file sample.bib
+Warning--entry type for "kicklenz" isn't style-file defined
 --line 40 of file sample.bib
-You've used 4 entries,
+Warning--entry type for "andra" isn't style-file defined
+--line 48 of file sample.bib
+Warning--entry type for "cineman" isn't style-file defined
+--line 85 of file sample.bib
+Warning--to sort, need author or key in andra
+Warning--to sort, need author or key in kicklenz
+Warning--to sort, need author or key in proaim
+Warning--to sort, need author or key in dassault
+Warning--to sort, need author or key in devand
+Warning--empty author in proaim
+Warning--empty journal in proaim
+You've used 10 entries,
             2243 wiz_defined-function locations,
-            544 strings with 4544 characters,
-and the built_in function-call counts, 778 in all, are:
-= -- 73
-> -- 28
+            557 strings with 4739 characters,
+and the built_in function-call counts, 1701 in all, are:
+= -- 151
+> -- 40
 < -- 0
-+ -- 13
-- -- 8
-* -- 27
-:= -- 152
-add.period$ -- 11
-call.type$ -- 4
-change.case$ -- 15
++ -- 21
+- -- 10
+* -- 62
+:= -- 259
+add.period$ -- 18
+call.type$ -- 10
+change.case$ -- 34
 chr.to.int$ -- 0
-cite$ -- 4
-duplicate$ -- 31
-empty$ -- 67
-format.name$ -- 8
-if$ -- 155
+cite$ -- 17
+duplicate$ -- 73
+empty$ -- 194
+format.name$ -- 10
+if$ -- 374
 int.to.chr$ -- 0
-int.to.str$ -- 4
-missing$ -- 2
-newline$ -- 22
-num.names$ -- 8
-pop$ -- 18
+int.to.str$ -- 10
+missing$ -- 3
+newline$ -- 41
+num.names$ -- 10
+pop$ -- 64
 preamble$ -- 1
-purify$ -- 12
+purify$ -- 25
 quote$ -- 0
-skip$ -- 26
+skip$ -- 77
 stack$ -- 0
-substring$ -- 21
-swap$ -- 2
+substring$ -- 51
+swap$ -- 7
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 14
-warning$ -- 0
-while$ -- 8
-width$ -- 5
-write$ -- 39
-(There was 1 warning)
+type$ -- 38
+warning$ -- 7
+while$ -- 10
+width$ -- 12
+write$ -- 72
+(There were 13 warnings)

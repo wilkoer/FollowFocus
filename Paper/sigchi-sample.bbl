@@ -1,4 +1,19 @@
-\begin{thebibliography}{1}
+\begin{thebibliography}{10}
+
+\bibitem{devand}
+Android developers - platform versions.
+
+\bibitem{dassault}
+Dassault systemes.
+
+\bibitem{kicklenz}
+Lenzhound - kickstarter.
+
+\bibitem{proaim}
+Proaim camera follow focus x1.
+
+\bibitem{andra}
+Andra motion focus, 2015.
 
 \bibitem{pburgdorf}
 Burgdorf, P.
@@ -16,6 +31,10 @@ Crabb, K.
 M{\"o}rwald, P.
 \newblock Development of a remote controlled camera slider.
 \newblock Bachelor's Thesis, 2014.
+
+\bibitem{soffer}
+Soffer, A.
+\newblock Github - follow focus.
 
 \bibitem{cineman}
 Stapleton, O.

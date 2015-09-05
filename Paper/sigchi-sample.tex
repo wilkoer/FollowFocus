@@ -41,6 +41,20 @@
 \setlength{\pdfpagewidth}{\pprw}
 \setlength{\pdfpageheight}{\pprh}
 
+\lstdefinestyle{customc}{
+  belowcaptionskip=1\baselineskip,
+  breaklines=false,
+  frame=M,
+  xleftmargin=\parindent,
+  language=JAVA,
+  showstringspaces=false,
+  basicstyle=\footnotesize\ttfamily,
+  keywordstyle=\bfseries\color{green},
+  commentstyle=\itshape\color{black},
+  identifierstyle=\color{blue},
+  stringstyle=\color{orange},
+}
+
 % Make sure hyperref comes last of your loaded packages, 
 % to give it a fighting chance of not being over-written, 
 % since its job is to redefine many LaTeX commands.
@@ -88,74 +102,79 @@ breaklinks=true,
 \end{abstract}
 
 \keywords{
-	Guides; instructions; author's kit; conference publications;
-	keywords should be separated by a semi-colon. \newline
+	Follow Focus; Movie Production; Remote Control; Film Set Automation; Arduino; Android;\newline
 }
 
 \section{Motivation and Background}
 
 \subsection{General Motivation}
-In movie production, especially the part of principal photography is considered one of the most expensive ones. This is, amongst other reasons, due to the often high number of scene takes, that have to be shot. \cite{kcrabb}
-Usually, manual control is required in order to zoom and to keep the focus on the desired object. In classical productions, the focus puller (or first Assistant Camera) is a dedicated position, whose job it is to keep the focus according to the cinematographers instructions. As there is no way to correct a falsely set focus in post-production, it is considered one of the hardest jobs on a film set. \cite{cineman}
-
-Previous and current research conducted by Ludwig-Maximilian-Universit\"at (LMU) in Munich has come up with the development of a remote controlled camera slider \cite{pmoerwald} and theoretical research on automated camera shots \cite{pburgdorf}. 
-
-Considering the difficulties resulting from the precision required while shooting a film, and the often high number of takes, it is worth thinking about a holistic system, that offers not only automated dolly shots, but also simplyfies the focus pullers' job. 
-
-This paper covers the prototypical development of a remote controlled focus pulling device with the long-term objective to get inegrated into a system, which combines automated dolly shots, focus pulling and camera tilts.
-
-This project could have utility in application such recording scenes in an impracticable environment for a human for instance.
-
 
 \subsubsection{General Description of the Topic}
 
+In movie production, especially the part of \textit{principal photography} is considered one of the most expensive ones. This is, amongst other reasons, due to the often high number of scene takes, that have to be shot. \cite{kcrabb}
+Usually, manual control is required in order to zoom and to keep the focus on the desired object. In classical productions, the \textit{focus puller} (or \textit{first Assistant Camera}) is a dedicated position, whose job it is to keep the focus according to the cinematographers instructions. As there is no way to correct a falsely set focus in post-production, it is considered one of the hardest jobs on a film set. \cite{cineman}
+
 \subsubsection{State of the Art in Follow Focus}
 
-This section gives a brief overview about currently existing technologies in the field of follow focus. 
+This section gives a brief overview about a selection of currently existing technologies in the field of follow focus. 
 
 Andra Motion Focus
 
-Andra Motion Focus is a follow focus hardware system developed by Andra Motion Technologies Inc. 
+Andra Motion Focus is a commercial hardware system developed by Andra Motion Technologies Inc. It combines hardware-supported motion capturing with a remote controlled follow focus system. It is currently controllable optionally with an iPad or a dedicated hardware interface, called \textit{The Arc}. Andra Motion Focus is designed for portability and efficiency, in order to reduce the amount of time needed and hence the shoots' cost. Due to the high price, it aims for professional and semi-professional film-makers. \cite{andra}
 
-Using a portable and easy to set up magnetic mo-cap system, it’s able to very accurately track subjects and cameras in real time and use that data to drive a lens control motor.  The mo-cap side of the system uses very small sensors which can be mounted to the performer beneath clothing, just like a lavalier microphone. The user can then decide where they want the focal point, relative to that sensor, and the system does the rest. 
-There are two ways to interface with the system. The basic approach to use an iPad. Another option is to use the hand unit (The Arc).
-The system can also be used to “save” positions of non moving objects in any given area, and, for dyed in the wool focus pullers who want to do it all manually, the hand unit streams live distance data of any chosen subject or object whether it’s moving or stationary.  You can choose to let the system pull focus for you, allowing you to simply decide when and how fast to move between subjects, or you can just use the data to pull manually.
+Lenzhound
 
-Show Focus
+Lenzhound is "A super-affordable wireless follow focus system for indie filmmakers." \cite{kicklenz} It was originally featured on kickstarter by a company called Motion Dogs. The key idea of Lenzhound is, to have a simplistic, hardware- and remote-controlled Focus System. It is belt-driven and can be attached to almost any type of camera lens. Unlike Andra Motion Focus, Lenzhound addresses both amateur and independent film-makers. 
 
-Designed to facilitate the duties of the on-set focus-puller, Show-Focus renders a physical representation of the invisible plane of focus so that the precise focal point can be deduced, and captured, at any time. The model is compromised of two components, communicable through a wireless connection: the camera module and the controller. The camera module, which is attached to the body of the shooting camera, provides a real-time 3D map of what is being filmed, while also controlling the focus ring through a motorized mechanism. The controller — as its name suggests — displays the map and allows the focus-puller to oversee the movements of the focus ring.
+Soffer Follow Focus
+
+"Follow Focus" by Adi Soffer is an open source and Do-it-yourself (DIY) follow focus project from 2013. It is based on Arduino hardware and standard electronical components, which makes it relatively easy to reproduce. The source code can be found on GitHub. \cite{soffer}
+
 
 PROAIM Camera Follow Focus X1 (FF-X1)
 
-On the market, you can find a lot of product like this one. Using gear driven designed, the FF-X1 ensures smooth accurate emphasis over your subject. Designed to give slip-free, accurate and repeatable focus movement on a wide range of cameras are possible.
+The FF-X1 by PROAIM Camera is exemplarily for many similar products on the market. It is a purely manual gear-driven mechanism, that is supposed to "ensure smooth accurate emphasis over your subject" \cite{proaim}. Usage is supported for a wide range of cameras. 
 
 
 \subsection{Background}
 
 \subsubsection{Vision}
 
+Considering the difficulties resulting from the precision required while shooting a film, and the often high number of takes, it is worth thinking about a holistic automated system. One that offers not only automated dolly shots, or remote controlled focus pulling, but one that includes everything from camera movement to image composition. As mentioned in the State of the Art Section, there is a wide range of systems available. However, they are often not affordable for independent film-makers, due to their high costs. Also, for most solutions, the benefit is limited to one single use-case, such as focus pulling. 
+
+Consequently, our vision is to create a DIY system, which combines features from severeal existing solutions.    
+
+
 \subsubsection{Current Research at LMU}
+
+Previous and current research conducted by \textit{Ludwig-Maximilian-Universit\"at} (LMU) in Munich has come up with the development of a remote controlled camera slider \cite{pmoerwald} and further theoretical research on automated camera shots \cite{pburgdorf}. 
+
+This paper covers the prototypical development of a remote controlled focus pulling device with the long-term objective to get inegrated into a system, which combines automated dolly shots, focus pulling and camera tilts.
 
 \section{Solution}
 
 \subsection{Our Follow Focus Approach}
-Our solution is based on the ideas of \textit{DIY Follow Focus} and \textit{Soffer Follow Focus}.
+Our approach is based on the ideas of \textit{DIY Follow Focus} and \textit{Soffer Follow Focus}, combined with an app-based remote control interface.
 
-What we want is a device adaptable to all types of camera. We also want a remote controller, which will work as interface between user and camera. A step motor attached to a gear would ensure the focus pulling depending on the received signal from the remote controller.
-Now those are the functionalities we want to implement:
+Having analyzed the existing solutions from the \textit{State of the Art} section, we came up with a list of requirements, that we impose on our prototype:
 \begin{itemize}
-  \item Real time focus pulling (in and out).
-  \item The speed of focus change should be adjustable.
-  \item The camera's range should be configurable.
-  \item We want to be able to record several motion sequences and play them back.
+  \item The protypical device is adaptable to a wide range of camera types. 
+  \item Focus pulling can be done in realtime.
+  \item The speed of focus change is adjustable.
+  \item The lense's range is calibratable.
+  \item Focus sequences are recordable and therefore easily repeatable.
+  \item The system is controllable through an Android-based app interface.
+  \item The communication between hardware and software happens via Bluetooth Low Energy (BLE).
 \end{itemize}
 
+Short BLE description here! TODO
+
 \subsection{Methods}
-To realize our aims we decided to develop an Arduino App for input. It sends via Bluetooth a perpetual signal to a BTLE module connected to an Arduino Nano. The Arduino processes those bytes and sends commands to a StepperDriver connected to a AccelStepper. 
+To realize our aims we decided to develop an Android App for input. It sends a perpetual signal via BLE to a BLE module connected to an Arduino Nano. The Arduino processes the byte information and sends commands to a stepper driver module. The driver then controls the movement of a stepper motor. 
 
 
 \subsubsection{Electrical Engineering}
-Top of all, we wanted our follow focus to be portable. Therefor the elements had to be small, low energy powered and easily embeddable. These challenges had to be tackled in the planning phase of the process. So at first we had to decide between different technologies in order to meet our aims:
+Top of all, we wanted our follow focus to be portable. Therefore the elements had to be small, low energy powered and easily embeddable. These challenges had to be tackled in the planning phase of the process. So at first we had to decide between different technologies in order to meet our aims:
 \begin{itemize}
 \item The remote controller would be a smart phone. Thus, anyone could easily control the follow focus device by downloading our application in the app store.
 \begin{figure}
@@ -175,60 +194,56 @@ Top of all, we wanted our follow focus to be portable. Therefor the elements had
 \end{figure} 
 \item Having a motor is good. Adapting it to an electrical system is better. The stepper driver will protect the Arduino Nano from different electrical damages that may be caused by the sudden increase of intensity caused by the motor. It also allows to turn in both directions.
 \item The AccelStepper library for Arduino is very useful as it makes the API never to block and supports very slow speeds. Also it helps to easily apply acceleration.
-\item None of the electronic parts is passive. To make them all work, we need electric energy, but we also want our global system to be portable. Therefor we will use different sets of battery, because the Arduino and the step motor need to be powered separately, at least 5V and 12V respectively.
+\item None of the electronic parts is passive. To make them all work, we need electric energy, but we also want our global system to be portable. Therefore we will use different sets of battery, because the Arduino and the step motor need to be powered separately, at least 5V and 12V respectively.
 \end{itemize}
-In the attached code of the Arduino we see how the components work together.
-\begin{lstlisting}
-if (status == ACI_EVT_CONNECTED) 
-  {
-    stepper.enableOutputs();
-    stepper.run();
-    if (BTLEserial.available()>0) 
-    {
-      digitalWrite (enablePin, LOW);
-      previousMillis = millis();
-      dataReceive = BTLEserial.read();
-      react(); //function to react to input   
-      stepper.run();
-      stepper.moveTo(encoderValue);
-    } 
-	...
 
-void react()
-{
-  if (dataReceive > 48 && dataReceive < 58)  //[1-9]-Key
-  {
-    speedValue = map(dataReceive, 49, 57,
-    	minSpeedValue, maxSpeedValue);
-    stepper.setMaxSpeed(speedValue);
-    Serial.println(speedValue);
-  } 
-  else if (dataReceive == 43) //[+]-Key
-  {
-    encoderValue += stepSize;
-  }
-  else if (dataReceive == 45)  //[-]-Key
-  {
-    encoderValue -= stepSize;
-  }    
-  else if (dataReceive == 0) {
-    encoderValue = stepper.currentPosition();
-  }
-  ...
-\end{lstlisting}
-
+\autoref{ccode} shows how the received BLE Serial date is being processed on Arduino side.
+\lstinputlisting[caption=Processing of received BLE serial data, style=customc, label={ccode}]{code.c}
  
 \subsubsection{Case Modeling}
+Challenges and Solution
+
+For building our case we faced two crucial questions: How can we achieve a small overall size to maintain portability? Which technology can we use to create a case, which is both stable and lightweight? 
+We quickly realized, that premade plastic cases for electronics would be too inflexible in terms of spatial efficiency, while the quality and stability was excellent. Our first approach for a self-made case was 3D-printing technology. First, we designed the parts with \textit{CATIA}, a 3D modeling software by \textit{Dassault Systemes} \cite{dassault}. However, the printing took a very long time and the outcome was not satisfying. Even though we expected a maximum of freedom in terms of design possibilities, the printed parts of the case turned out to be very uneven and instable. 
+Our third, and final option was the use of a laser cutter. We were able to reutilize parts of the 3D model, which we created for the 3D-printing approach. The 3mm wooden material turned out to be ideal for our case, as it offers the needed stability, while being lightweight and easy to process. 
+
+The finished case is composed of three compartments. The first one accommodates the electronic parts. 
+A second one lies underneath and is designed exclusively for the batteries. The back of the case has two notches, which allow to open the backside easily when a battery exchange is due. In the front part of the case, there is space reserved for the stepper motor, which can be fixated with screws. The slots on the sides around the stepper motor are supposed to evacuate the heat produced by the motor when it is at work. Two holes drilled into the partition walls allow wires to connect the Arduino, stepper and battery compartments.
+
 \begin{figure}
-	\center
-	\includegraphics[width=0.4\textwidth]{case.png}
+  \center
+  \includegraphics[width=0.4\textwidth]{case.png}
 \end{figure} 
-For building our case we faced two crucial questions. How can we achieve a small overall size to maintain portability? Which technology can we use to create a case, that is both stable and lightweight? - 3D-printing or laser cutting. First we designed the parts with CATIA, the 3D modeling software from Dassault System. But the 3D-model took a lot of printing time and in the end they felt very unstable. So we used laser cutting on 3mm wood in the end which is to a very nice looking and useful material. Also for redesigning and resizing this easy manipulative material proved to be best.
-The box is composed of three compartments. The first part is the place which houses the electronic parts. A similar space exists underneath and is designed for the batteries, to allow exclusive access. The back of the case has two nicks which allow to open the backside easily when a battery exchange is due. In the front of the box is a place for the stepper motor, which can be screwed in. The notches on the sides are supposed to evacuate the heat produced by the motor when it is at work. Two holes drilled into the partition walls allow wires to connect the Arduino, stepper and battery compartments.
-
-
 
 \subsubsection{App Development}
+Challenges
+
+For the development the of the remote controller app, we faced various challenges. As we defined the use of BLE as one of our requirements, only a part of the available Android devices is capable of executing our application, namely those with Android 4.3 or higher and the required hardware module built in. Currently (as of August 3, 2015), 62.1 percent of all Android devices meet the requirements software-sided, while the share of devices, which provide BLE hardware is unknown. \cite{devand} However, we did not consider this being a problem, as the advantages of BLE technology outweigh the disadvantage (compare \textit{Bluetooth Low Energy} in \textit{Our Follow Focus Approach}).
+
+The other challenge was, how to implement the required functionalities. Here, it was important to keep the extensibility in mind. As the main goal is, to eventually embed the app and the hardware into to a larger system, it must be developed in a way, that it can be easily extended on the one hand, and that the logic can be transferred into another app on the other hand (compare \textit{Our Vision}). One of the key challenges, was the implementation of the focus sequence recording in a way, that sequences are exactly reproducable. 
+
+Last, but not least, the User Interface (UI) should be created in a way, that makes the app easy to use, especially when it offers multiple different functionalities. As the design of a UI is not directly part of our requirements, we neglect this topic in this paper. 
+
+
+Our Solution
+
+As our solution for the controller, we developed an Android App for smartphones. Through the provided UI, the camera operator is able to connect to the Follow Focus device via BLE. 
+Once connected, the lens range of the attached camera can be calibrated in order to prevent the stepper motor from damaging the lens focus thread.
+The underlying logic for focus movement is relatively simple. The app manages two \textit{byte}-values for both speed and direction of the movement.
+The speed value can be regulated via a slider element (\textit{SeekBar} in Android SDK) with a range from 0 to 100. The direction can be either right (IN), left (OUT) or neutral (no movement), and can be regulated via two buttons. The default direction is neutral, and direction changes only, while one of the two buttons is pressed.  \newline
+To implement the focus sequence recording function, we had to think of a way, how the user input could be saved including the temporal aspect. Therefore, the important information is not only \textit{what} the user does, but also \textit{when}. We basically came up with two approaches to this problem: \newline
+\begin{itemize}
+  \item Whenever a user input occurs, send the data and save the input type and value (e.g. speed 99), as well as the time delta from the beginning of the recording.
+  \item Constantly check, save and send current speed and direction every \textit{x} miliseconds.
+\end{itemize}
+
+As one of the key aspects of recording a sequence is reliable repeatability, we figured that the second option would offer the better results (in terms of result stability). Due to expected latency on both the master's side (i.e. the mobile android device) and the slave (the follow focus device), we expect the first option to lead to irregular playback result. \newline
+The sampling approach of the second option offers regular samples, which can be iterated through in the defined interval in order to exactly repeat the original input.
+
+
+\lstinputlisting[caption=Focus Sequence Sampling, style=customc, label={javacode}]{code.java}
+
+As can be seen in \autoref{javacode}, a timer thread in the controller app executes a function every \textit{EXECUTION\_INTERVAL} miliseconds. We defined this as an integer constant with the value of 50, which turned out to deliver the most stable results in our tests. 
 
 \section{Discussion \& Next Steps}
 
