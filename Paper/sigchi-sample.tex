@@ -99,6 +99,8 @@ breaklinks=true,
 
 \begin{abstract}
 
+This paper covers the development of a novel device for focus pulling in movie production. It describes the field of application and gives an overview of established commercial and non-commercial solutions, before stating current research and deducing requirements for a new development. It further documents the challenges and solutions, that came up during the development process, before attempting a future prospect.
+
 \end{abstract}
 
 \keywords{
@@ -116,7 +118,7 @@ Usually, manual control is required in order to zoom and to keep the focus on th
 
 \subsubsection{State of the Art in Follow Focus}
 
-This section gives a brief overview about a selection of currently existing technologies in the field of follow focus. 
+This section gives a brief overview of a selection of currently existing technologies in the field of follow focus. 
 
 Andra Motion Focus
 
@@ -145,9 +147,9 @@ Considering the difficulties resulting from the precision required while shootin
 Consequently, our vision is to create a DIY system, which combines features from severeal existing solutions.    
 
 
-\subsubsection{Current Research at LMU}
+\subsubsection{Current Research at Ludwig-Maximilian-Universit\"at (LMU)}
 
-Previous and current research conducted by \textit{Ludwig-Maximilian-Universit\"at} (LMU) in Munich has come up with the development of a remote controlled camera slider \cite{pmoerwald} and further theoretical research on automated camera shots \cite{pburgdorf}. 
+Previous and current research conducted by LMU in Munich, Germany has come up with the development of a remote controlled camera slider \cite{pmoerwald} and further theoretical research on automated camera shots \cite{pburgdorf}. 
 
 This paper covers the prototypical development of a remote controlled focus pulling device with the long-term objective to get inegrated into a system, which combines automated dolly shots, focus pulling and camera tilts.
 
@@ -156,7 +158,7 @@ This paper covers the prototypical development of a remote controlled focus pull
 \subsection{Our Follow Focus Approach}
 Our approach is based on the ideas of \textit{DIY Follow Focus} \cite{diyff} and \textit{Soffer Follow Focus}, combined with an app-based remote control interface.
 
-Having analyzed the existing solutions from the \textit{State of the Art} section, we came up with a list of requirements, that we impose on our prototype:
+Having analyzed the existing solutions from the \textit{State of the Art} section and current research, we came up with a list of requirements, that we impose on our prototype:
 \begin{itemize}
   \item The protypical device is adaptable to a wide range of camera types. 
   \item Focus pulling can be done in realtime.
@@ -167,7 +169,7 @@ Having analyzed the existing solutions from the \textit{State of the Art} sectio
   \item The communication between hardware and software happens via Bluetooth Low Energy (BLE).
 \end{itemize}
 
-BLE is a low-cost wireless technology, which allows data transmission with a comparatively low energy consumption. According to the official bluetooth developer portal, it has the "ability to run for years on standard coin-cell batteries". \cite{ble} 
+BLE is a low-cost wireless technology, which allows data transmission with a comparatively low energy consumption. According to the official bluetooth developer portal, it has the "ability to run for years on standard coin-cell batteries". \cite{ble} Wer decided to 
 
 \subsection{Methods}
 To realize our aims we decided to develop an Android App for input. It sends a perpetual signal via BLE to a BLE module connected to an Arduino Nano. The Arduino processes the byte information and sends commands to a stepper driver module. The driver then controls the movement of a stepper motor. 
@@ -240,15 +242,31 @@ To implement the focus sequence recording function, we had to think of a way, ho
 As one of the key aspects of recording a sequence is reliable repeatability, we figured that the second option would offer the better results (in terms of result stability). Due to expected latency on both the master's side (i.e. the mobile android device) and the slave (the follow focus device), we expect the first option to lead to irregular playback result. \newline
 The sampling approach of the second option offers regular samples, which can be iterated through in the defined interval in order to exactly repeat the original input.
 
-
 \lstinputlisting[caption=Focus Sequence Sampling, style=customc, label={javacode}]{code.java}
 
 As can be seen in \autoref{javacode}, a timer thread in the controller app executes a function every \textit{EXECUTION\_INTERVAL} miliseconds. We defined this as an integer constant with the value of 50, which turned out to deliver the most stable results in our tests. 
 
+The calibration works in the following way: The user can move the cameras' focus ring via the \textit{IN} and \textit{OUT} buttons to either the minimum or the maximum stop. By pressing the \textit{set min}, repectively \textit{set max} button, the app sends a signal to the Arduino. Upon arrival, it responds with the current position of the stepper motor. The minimum and maximum positions are saved in variables throughout the session. Knowing the current speed and direction, the app also knows the position of the stepper motor at all times. Hence, it can prohibit movement past the limits of the lens.
+
+
 \section{Discussion \& Next Steps}
+
+Regarding the existence of other DIY projects, one might come up with the question \textit{Why is this important?} Admittedly, the current state is not much more than a combination and extension of the named. Though, we believe that the real strength of this project lies in its technological and topical compatibility with current research projects at LMU. Having the vision of a system in mind, that remotely controls all matters of a camera operator via an Android app, this paper covers a necessary and logical step towards the big picture. 
+However, there are things that have to be addressed up front: 
+\begin{itemize}
+  \item The UI of our controller app is rather provisorily. Even though we deliberately neglected this topic in the scope of this paper, it is a major point for a good usability within a complex control environment.
+  \item Vernier adjustment of the mechanical parts. The size of the gear and the gear transmission ratio have to be tested under real circumstances, in order to make sure that the movement suits the needs of a film production scenario.
+  \item The same applies to the parameters in the Arduino software. Step size and movement speed have to be adjusted to ensure smooth movements throughout a focus sequence.
+\end{itemize}
+
+The case is equipped with its own power supply, as well as braces, that allow attachment to a camera rail. That means, that the current system can be integrated into the existing camera slider (compare \textit{Current Research at LMU}) independently, from a hardware perspective. 
+
+Software-sided, the next step would be to conceptualize and develop a mobile application, that controls and records not only focus sequences, but also many different aspects of the camera operator related tasks. This is why the outcome of our follow focus app should be seen more as a proof of concept, rather than a fully matured product.
 
 
 \section{Conclusion}
+
+Conclusively, this work has shown, that a more advanced tool for focus pulling can be developed with relatively simple means. The availability of existing open source projects, such as Soffer Follow Focus \cite{soffer} or DIY Follow Focus \cite{diyff}, as well as fairly low priced electronic components lay the foundation for many DIY opportunities. Advanced commercial projects like Andra Motion Focus \cite{andra} represent the current state of the art, and, with their multitude of novel features, serve as a source of inspiration for own projects.
 
 \bibliographystyle{acm-sigchi}
 \bibliography{sample}
