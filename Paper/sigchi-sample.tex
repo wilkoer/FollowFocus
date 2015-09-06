@@ -154,7 +154,7 @@ This paper covers the prototypical development of a remote controlled focus pull
 \section{Solution}
 
 \subsection{Our Follow Focus Approach}
-Our approach is based on the ideas of \textit{DIY Follow Focus} and \textit{Soffer Follow Focus}, combined with an app-based remote control interface.
+Our approach is based on the ideas of \textit{DIY Follow Focus} \cite{diyff} and \textit{Soffer Follow Focus}, combined with an app-based remote control interface.
 
 Having analyzed the existing solutions from the \textit{State of the Art} section, we came up with a list of requirements, that we impose on our prototype:
 \begin{itemize}
@@ -167,7 +167,7 @@ Having analyzed the existing solutions from the \textit{State of the Art} sectio
   \item The communication between hardware and software happens via Bluetooth Low Energy (BLE).
 \end{itemize}
 
-Short BLE description here! TODO
+BLE is a low-cost wireless technology, which allows data transmission with a comparatively low energy consumption. According to the official bluetooth developer portal, it has the "ability to run for years on standard coin-cell batteries". \cite{ble} 
 
 \subsection{Methods}
 To realize our aims we decided to develop an Android App for input. It sends a perpetual signal via BLE to a BLE module connected to an Arduino Nano. The Arduino processes the byte information and sends commands to a stepper driver module. The driver then controls the movement of a stepper motor. 
@@ -177,21 +177,21 @@ To realize our aims we decided to develop an Android App for input. It sends a p
 Top of all, we wanted our follow focus to be portable. Therefore the elements had to be small, low energy powered and easily embeddable. These challenges had to be tackled in the planning phase of the process. So at first we had to decide between different technologies in order to meet our aims:
 \begin{itemize}
 \item The remote controller would be a smart phone. Thus, anyone could easily control the follow focus device by downloading our application in the app store.
-\begin{figure}
-	\includegraphics[width=0.4\textwidth]{nano.png}
-\end{figure} 
+%\begin{figure}
+%	\includegraphics[width=0.4\textwidth]{nano.png}
+%\end{figure} 
 \item For our requirements an Arduino Nano is more than sufficient. It is small and consumes only little.
-\begin{figure}
-	\includegraphics[width=0.4\textwidth]{btle.jpg}
-\end{figure} 
+%\begin{figure}
+%	\includegraphics[width=0.4\textwidth]{btle.jpg}
+%\end{figure} 
 \item For the Wireless control we use Bluetooth LE because of its low energy, easy implementation and also because there is a large web community and many examples available online.
-\begin{figure}
-	\includegraphics[width=0.4\textwidth]{stepper.jpg}
-\end{figure} 
+%\begin{figure}
+%	\includegraphics[width=0.4\textwidth]{stepper.jpg}
+%\end{figure} 
 \item A stepper motor is used because it works more precise and faster than a servo and has only small enertia. Also with stepper we always know the exact amount of rotation we have to apply.
-\begin{figure}
-	\includegraphics[width=0.4\textwidth]{driver.png}
-\end{figure} 
+%\begin{figure}
+%	\includegraphics[width=0.4\textwidth]{driver.png}
+%\end{figure} 
 \item Having a motor is good. Adapting it to an electrical system is better. The stepper driver will protect the Arduino Nano from different electrical damages that may be caused by the sudden increase of intensity caused by the motor. It also allows to turn in both directions.
 \item The AccelStepper library for Arduino is very useful as it makes the API never to block and supports very slow speeds. Also it helps to easily apply acceleration.
 \item None of the electronic parts is passive. To make them all work, we need electric energy, but we also want our global system to be portable. Therefore we will use different sets of battery, because the Arduino and the step motor need to be powered separately, at least 5V and 12V respectively.
@@ -201,7 +201,7 @@ Top of all, we wanted our follow focus to be portable. Therefore the elements ha
 \lstinputlisting[caption=Processing of received BLE serial data, style=customc, label={ccode}]{code.c}
  
 \subsubsection{Case Modeling}
-Challenges and Solution
+Challenges \& Solution
 
 For building our case we faced two crucial questions: How can we achieve a small overall size to maintain portability? Which technology can we use to create a case, which is both stable and lightweight? 
 We quickly realized, that premade plastic cases for electronics would be too inflexible in terms of spatial efficiency, while the quality and stability was excellent. Our first approach for a self-made case was 3D-printing technology. First, we designed the parts with \textit{CATIA}, a 3D modeling software by \textit{Dassault Systemes} \cite{dassault}. However, the printing took a very long time and the outcome was not satisfying. Even though we expected a maximum of freedom in terms of design possibilities, the printed parts of the case turned out to be very uneven and instable. 
@@ -210,10 +210,10 @@ Our third, and final option was the use of a laser cutter. We were able to reuti
 The finished case is composed of three compartments. The first one accommodates the electronic parts. 
 A second one lies underneath and is designed exclusively for the batteries. The back of the case has two notches, which allow to open the backside easily when a battery exchange is due. In the front part of the case, there is space reserved for the stepper motor, which can be fixated with screws. The slots on the sides around the stepper motor are supposed to evacuate the heat produced by the motor when it is at work. Two holes drilled into the partition walls allow wires to connect the Arduino, stepper and battery compartments.
 
-\begin{figure}
-  \center
-  \includegraphics[width=0.4\textwidth]{case.png}
-\end{figure} 
+%\begin{figure}
+ % \center
+ % \includegraphics[width=0.4\textwidth]{case.png}
+%\end{figure} 
 
 \subsubsection{App Development}
 Challenges
@@ -246,6 +246,7 @@ The sampling approach of the second option offers regular samples, which can be 
 As can be seen in \autoref{javacode}, a timer thread in the controller app executes a function every \textit{EXECUTION\_INTERVAL} miliseconds. We defined this as an integer constant with the value of 50, which turned out to deliver the most stable results in our tests. 
 
 \section{Discussion \& Next Steps}
+
 
 \section{Conclusion}
 

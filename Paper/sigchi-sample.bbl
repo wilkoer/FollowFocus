@@ -2,18 +2,34 @@
 
 \bibitem{devand}
 Android developers - platform versions.
+\newblock \url{https://developer.android.com/about/dashboards/index.html}.
+
+\bibitem{ble}
+Bluetooth low energy.
+\newblock
+  \url{https://developer.bluetooth.org/TechnologyOverview/Pages/BLE.aspx}.
 
 \bibitem{dassault}
 Dassault systemes.
+\newblock \url{http://www.3ds.com/de}.
 
 \bibitem{kicklenz}
 Lenzhound - kickstarter.
+\newblock
+  \url{https://www.kickstarter.com/projects/1608311032/lenzhound-wireless-lens-motor-control-system?lang=de}.
 
 \bibitem{proaim}
 Proaim camera follow focus x1.
+\newblock
+  \url{http://www.proaimshop.com/pas/PROAIM-Camera-Follow-Focus-X1.html}.
+
+\bibitem{diyff}
+Diy follow focus, 2014.
+\newblock \url{https://vimeo.com/85608648}.
 
 \bibitem{andra}
 Andra motion focus, 2015.
+\newblock \url{http://andra.com/}.
 
 \bibitem{pburgdorf}
 Burgdorf, P.
@@ -35,9 +51,11 @@ M{\"o}rwald, P.
 \bibitem{soffer}
 Soffer, A.
 \newblock Github - follow focus.
+\newblock \url{https://github.com/soffer/Follow-Focus}.
 
 \bibitem{cineman}
 Stapleton, O.
 \newblock So you wanna work in movies? - camera department.
+\newblock \url{http://www.cineman.co.uk/#camera}.
 
 \end{thebibliography}
