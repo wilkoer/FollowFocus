@@ -4,8 +4,6 @@ if (status == ACI_EVT_CONNECTED)
     stepper.run();
     if (BLEserial.available()>0) 
     {
-      digitalWrite (enablePin, LOW);
-      previousMillis = millis();
       dataReceive = BLEserial.read();
       react(); //function to react to input   
       stepper.run();
@@ -20,7 +18,6 @@ void react()
     speedValue = map(dataReceive, 49, 57,
     	minSpeedValue, maxSpeedValue);
     stepper.setMaxSpeed(speedValue);
-    Serial.println(speedValue);
   } 
   else if (dataReceive == 43) //[+]-Key
   {

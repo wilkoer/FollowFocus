@@ -113,7 +113,7 @@ This paper covers the development of a novel device for focus pulling in movie p
 
 \subsubsection{General Description of the Topic}
 
-In movie production, especially the part of \textit{principal photography} is considered one of the most expensive ones. This is, amongst other reasons, due to the often high number of scene takes, that have to be shot. \cite{kcrabb}
+In movie production, especially the part of \textit{principal photography} is considered one of the most expensive ones. This is, among other reasons, due to the often high number of scene takes, that have to be shot. \cite{kcrabb}
 Usually, manual control is required in order to zoom and to keep the focus on the desired object. In classical productions, the \textit{focus puller} (or \textit{first Assistant Camera}) is a dedicated position, whose job it is to keep the focus according to the cinematographers instructions. As there is no way to correct a falsely set focus in post-production, it is considered one of the hardest jobs on a film set. \cite{cineman}
 
 \subsubsection{State of the Art in Follow Focus}
@@ -135,7 +135,7 @@ Soffer Follow Focus
 
 PROAIM Camera Follow Focus X1 (FF-X1)
 
-The FF-X1 by PROAIM Camera is exemplarily for many similar products on the market. It is a purely manual gear-driven mechanism, that is supposed to "ensure smooth accurate emphasis over your subject" \cite{proaim}. Usage is supported for a wide range of cameras. 
+The FF-X1 by PROAIM Camera is exemplary for many similar products on the market. It is a purely manual gear-driven mechanism, that is supposed to "ensure smooth accurate emphasis over your subject" \cite{proaim}. Usage is supported for a wide range of cameras. 
 
 
 \subsection{Background}
@@ -144,14 +144,14 @@ The FF-X1 by PROAIM Camera is exemplarily for many similar products on the marke
 
 Considering the difficulties resulting from the precision required while shooting a film, and the often high number of takes, it is worth thinking about a holistic automated system. One that offers not only automated dolly shots, or remote controlled focus pulling, but one that includes everything from camera movement to image composition. As mentioned in the State of the Art Section, there is a wide range of systems available. However, they are often not affordable for independent film-makers, due to their high costs. Also, for most solutions, the benefit is limited to one single use-case, such as focus pulling. 
 
-Consequently, our vision is to create a DIY system, which combines features from severeal existing solutions.    
+Consequently, our vision is to create a DIY system, which combines features from several existing solutions.    
 
 
 \subsubsection{Current Research at Ludwig-Maximilian-Universit\"at (LMU)}
 
 Previous and current research conducted by LMU in Munich, Germany has come up with the development of a remote controlled camera slider \cite{pmoerwald} and further theoretical research on automated camera shots \cite{pburgdorf}. 
 
-This paper covers the prototypical development of a remote controlled focus pulling device with the long-term objective to get inegrated into a system, which combines automated dolly shots, focus pulling and camera tilts.
+This paper covers the prototypical development of a remote controlled focus pulling device with the long-term objective to get integrated into a system, which combines automated dolly shots, focus pulling and camera tilts.
 
 \section{Solution}
 
@@ -169,7 +169,7 @@ Having analyzed the existing solutions from the \textit{State of the Art} sectio
   \item The communication between hardware and software happens via Bluetooth Low Energy (BLE).
 \end{itemize}
 
-BLE is a low-cost wireless technology, which allows data transmission with a comparatively low energy consumption. According to the official bluetooth developer portal, it has the "ability to run for years on standard coin-cell batteries". \cite{ble} Wer decided to 
+BLE is a low-cost wireless technology, which allows data transmission with a comparatively low energy consumption. According to the official bluetooth developer portal, it has the "ability to run for years on standard coin-cell batteries". \cite{ble}
 
 \subsection{Methods}
 To realize our aims we decided to develop an Android App for input. It sends a perpetual signal via BLE to a BLE module connected to an Arduino Nano. The Arduino processes the byte information and sends commands to a stepper driver module. The driver then controls the movement of a stepper motor. 
@@ -178,51 +178,63 @@ To realize our aims we decided to develop an Android App for input. It sends a p
 \subsubsection{Electrical Engineering}
 Top of all, we wanted our follow focus to be portable. Therefore the elements had to be small, low energy powered and easily embeddable. These challenges had to be tackled in the planning phase of the process. So at first we had to decide between different technologies in order to meet our aims:
 \begin{itemize}
-\item The remote controller would be a smart phone. Thus, anyone could easily control the follow focus device by downloading our application in the app store.
-%\begin{figure}
-%	\includegraphics[width=0.4\textwidth]{nano.png}
-%\end{figure} 
-\item For our requirements an Arduino Nano is more than sufficient. It is small and consumes only little.
-%\begin{figure}
-%	\includegraphics[width=0.4\textwidth]{btle.jpg}
-%\end{figure} 
-\item For the Wireless control we use Bluetooth LE because of its low energy, easy implementation and also because there is a large web community and many examples available online.
-%\begin{figure}
-%	\includegraphics[width=0.4\textwidth]{stepper.jpg}
-%\end{figure} 
-\item A stepper motor is used because it works more precise and faster than a servo and has only small enertia. Also with stepper we always know the exact amount of rotation we have to apply.
-%\begin{figure}
-%	\includegraphics[width=0.4\textwidth]{driver.png}
-%\end{figure} 
-\item Having a motor is good. Adapting it to an electrical system is better. The stepper driver will protect the Arduino Nano from different electrical damages that may be caused by the sudden increase of intensity caused by the motor. It also allows to turn in both directions.
+\begin{figure}
+	\includegraphics[width=0.4\textwidth]{nano.png}
+	\caption{Arduino Nano}
+	\label{fig:Nano}
+\end{figure} 
+\item For our requirements an Arduino Nano (see Figure \ref{fig:Nano}) is more than sufficient. It is small and consumes only little.
+\begin{figure}
+	\includegraphics[width=0.4\textwidth]{btle.jpg}
+	\caption{Low Energy Bluetooth (BTLE) module}
+	\label{fig:BTLE}
+\end{figure} 
+\item For the Wireless control we use Bluetooth LE (see Figure \ref{fig:BTLE}) because of its low energy, easy implementation and also because there is a large web community and many examples available online.
+\begin{figure}
+	\includegraphics[width=0.4\textwidth]{stepper.jpg}
+	\caption{Stepper Motor}
+	\label{fig:Stepper}
+\end{figure} 
+\item A stepper motor (see Figure \ref{fig:Stepper}) is used because it works more precise and faster than a servo and has only small enertia. Also with stepper we always know the exact amount of rotation we have to apply.
+\begin{figure}
+	\includegraphics[width=0.4\textwidth]{driver.png}
+	\caption{Stepper Driver}
+	\label{fig:Driver}
+\end{figure} 
+\item The best way to enclose a motor is adapting it to an electrical system. The stepper driver (see Figure \ref{fig:Driver}) will protect the Arduino Nano from different electrical damages that may be caused by the sudden increase of intensity caused by the motor. It also allows to turn in both directions.
 \item The AccelStepper library for Arduino is very useful as it makes the API never to block and supports very slow speeds. Also it helps to easily apply acceleration.
 \item None of the electronic parts is passive. To make them all work, we need electric energy, but we also want our global system to be portable. Therefore we will use different sets of battery, because the Arduino and the step motor need to be powered separately, at least 5V and 12V respectively.
 \end{itemize}
 
-\autoref{ccode} shows how the received BLE Serial date is being processed on Arduino side.
+\autoref{ccode} shows how the received BLE Serial data is being processed on Arduino side. The main loop always checks for connection and if so then at first we perform run() on the stepper to step to the next position if there is one due. \\
+Now there are basically two possibilities for our control. Either we use a fixed maximum speed and only change the step size or we vary the speed and use always the same step size. Our experiments showed that the second method performs more fluid and exact. So this is now how react() works: \\
+the Arduino listens to incoming values 0, 43, 45, 49 to 57 which represent the ASCII values of the number keypad. [+] adds one step to the stepper's position and [-] subtracts. [0] stops our stepper immediately. This is necessary as there might be some steps due because of congestion in the output processing. With Keys [1] to [9] we control nine different speeds.\\
+ After react() we run() again due steps and set the new due position which will be executed in the next loop.
 \lstinputlisting[caption=Processing of received BLE serial data, style=customc, label={ccode}]{code.c}
  
 \subsubsection{Case Modeling}
 Challenges \& Solution
 
-For building our case we faced two crucial questions: How can we achieve a small overall size to maintain portability? Which technology can we use to create a case, which is both stable and lightweight? 
-We quickly realized, that premade plastic cases for electronics would be too inflexible in terms of spatial efficiency, while the quality and stability was excellent. Our first approach for a self-made case was 3D-printing technology. First, we designed the parts with \textit{CATIA}, a 3D modeling software by \textit{Dassault Systemes} \cite{dassault}. However, the printing took a very long time and the outcome was not satisfying. Even though we expected a maximum of freedom in terms of design possibilities, the printed parts of the case turned out to be very uneven and instable. 
-Our third, and final option was the use of a laser cutter. We were able to reutilize parts of the 3D model, which we created for the 3D-printing approach. The 3mm wooden material turned out to be ideal for our case, as it offers the needed stability, while being lightweight and easy to process. 
+For building our case (see Figure \ref{fig:Case}) we faced two crucial questions: How can we achieve a small overall size to maintain portability? Which technology can we use to create a case, which is both stable and lightweight? 
+We quickly realized, that premade plastic cases for electronics would be too inflexible in terms of spatial efficiency, while the quality and stability was excellent. Our first approach for a self-made case was 3D-printing technology. First, we designed the parts with \textit{CATIA}, a 3D modeling software by \textit{Dassault Systemes} \cite{dassault}. However, the printing took a very long time and the outcome was not satisfying. Even though we expected a maximum of freedom in terms of design possibilities, the printed parts of the case turned out to be very uneven and unstable. 
+Our third, and final option was the use of a laser cutter. We were able to re-utilize parts of the 3D model, which we created for the 3D-printing approach. The 3mm wooden material turned out to be ideal for our case, as it offers the needed stability, while being lightweight and easy to process. 
 
 The finished case is composed of three compartments. The first one accommodates the electronic parts. 
 A second one lies underneath and is designed exclusively for the batteries. The back of the case has two notches, which allow to open the backside easily when a battery exchange is due. In the front part of the case, there is space reserved for the stepper motor, which can be fixated with screws. The slots on the sides around the stepper motor are supposed to evacuate the heat produced by the motor when it is at work. Two holes drilled into the partition walls allow wires to connect the Arduino, stepper and battery compartments.
 
-%\begin{figure}
- % \center
- % \includegraphics[width=0.4\textwidth]{case.png}
-%\end{figure} 
+\begin{figure}
+ 	\center
+ 	\includegraphics[width=0.4\textwidth]{case.png}
+	\caption{Our Wooden Prototype Case}
+	\label{fig:Case}
+\end{figure} 
 
 \subsubsection{App Development}
 Challenges
 
 For the development the of the remote controller app, we faced various challenges. As we defined the use of BLE as one of our requirements, only a part of the available Android devices is capable of executing our application, namely those with Android 4.3 or higher and the required hardware module built in. Currently (as of August 3, 2015), 62.1 percent of all Android devices meet the requirements software-sided, while the share of devices, which provide BLE hardware is unknown. \cite{devand} However, we did not consider this being a problem, as the advantages of BLE technology outweigh the disadvantage (compare \textit{Bluetooth Low Energy} in \textit{Our Follow Focus Approach}).
 
-The other challenge was, how to implement the required functionalities. Here, it was important to keep the extensibility in mind. As the main goal is, to eventually embed the app and the hardware into to a larger system, it must be developed in a way, that it can be easily extended on the one hand, and that the logic can be transferred into another app on the other hand (compare \textit{Our Vision}). One of the key challenges, was the implementation of the focus sequence recording in a way, that sequences are exactly reproducable. 
+The other challenge was, how to implement the required functionalities. Here, it was important to keep the extensibility in mind. As the main goal is, to eventually embed the app and the hardware into to a larger system, it must be developed in a way, that it can be easily extended on the one hand, and that the logic can be transferred into another app on the other hand (compare \textit{Our Vision}). One of the key challenges, was the implementation of the focus sequence recording in a way, that sequences are exactly reproducible. 
 
 Last, but not least, the User Interface (UI) should be created in a way, that makes the app easy to use, especially when it offers multiple different functionalities. As the design of a UI is not directly part of our requirements, we neglect this topic in this paper. 
 
@@ -236,7 +248,7 @@ The speed value can be regulated via a slider element (\textit{SeekBar} in Andro
 To implement the focus sequence recording function, we had to think of a way, how the user input could be saved including the temporal aspect. Therefore, the important information is not only \textit{what} the user does, but also \textit{when}. We basically came up with two approaches to this problem: \newline
 \begin{itemize}
   \item Whenever a user input occurs, send the data and save the input type and value (e.g. speed 99), as well as the time delta from the beginning of the recording.
-  \item Constantly check, save and send current speed and direction every \textit{x} miliseconds.
+  \item Constantly check, save and send current speed and direction every \textit{x} milliseconds.
 \end{itemize}
 
 As one of the key aspects of recording a sequence is reliable repeatability, we figured that the second option would offer the better results (in terms of result stability). Due to expected latency on both the master's side (i.e. the mobile android device) and the slave (the follow focus device), we expect the first option to lead to irregular playback result. \newline
@@ -246,7 +258,7 @@ The sampling approach of the second option offers regular samples, which can be 
 
 As can be seen in \autoref{javacode}, a timer thread in the controller app executes a function every \textit{EXECUTION\_INTERVAL} miliseconds. We defined this as an integer constant with the value of 50, which turned out to deliver the most stable results in our tests. 
 
-The calibration works in the following way: The user can move the cameras' focus ring via the \textit{IN} and \textit{OUT} buttons to either the minimum or the maximum stop. By pressing the \textit{set min}, repectively \textit{set max} button, the app sends a signal to the Arduino. Upon arrival, it responds with the current position of the stepper motor. The minimum and maximum positions are saved in variables throughout the session. Knowing the current speed and direction, the app also knows the position of the stepper motor at all times. Hence, it can prohibit movement past the limits of the lens.
+The calibration works in the following way: The user can move the cameras' focus ring via the \textit{IN} and \textit{OUT} buttons to either the minimum or the maximum stop. By pressing the \textit{set min}, respective \textit{set max} button, the app sends a signal to the Arduino. Upon arrival, it responds with the current position of the stepper motor. The minimum and maximum positions are saved in variables throughout the session. Knowing the current speed and direction, the app also knows the position of the stepper motor at all times. Hence, it can prohibit movement past the limits of the lens.
 
 
 \section{Discussion \& Next Steps}
