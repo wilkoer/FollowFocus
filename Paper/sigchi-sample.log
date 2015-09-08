@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2015.8.30)  8 SEP 2015 02:28
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2015.8.30)  8 SEP 2015 13:02
 entering extended mode
 **sigchi-sample.tex
 (sigchi-sample.tex
@@ -418,15 +418,20 @@ Underfull \vbox (badness 2020) has occurred while \output is active []
 
 Non-PDF special ignored!
 
-] <nano.png, id=96, 1565.85pt x 1245.65375pt>
-File: nano.png Graphic file (type png)
+]
+Underfull \hbox (badness 3492) in paragraph at lines 169--170
+[]\OT1/ptm/m/n/10 The com-mu-ni-ca-tion be-tween hard-ware and soft-ware
+ []
 
-<use nano.png>
+<nano.png, id=96, 1565.85pt x 1245.65375pt>
+File: nano.png Graphic file (type png)
+ <use nano.png>
 Package pdftex.def Info: nano.png used on input line 182.
 (pdftex.def)             Requested size: 204.8567pt x 162.94804pt.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <8> not available
 (Font)              Font shape `OT1/ptm/b/n' tried instead on input line 183.
- <btle.jpg, id=98, 409.53pt x 307.1475pt>
+
+<btle.jpg, id=98, 409.53pt x 307.1475pt>
 File: btle.jpg Graphic file (type jpg)
  <use btle.jpg>
 Package pdftex.def Info: btle.jpg used on input line 188.
@@ -468,17 +473,18 @@ Underfull \hbox (badness 10000) in paragraph at lines 16--17
 [][][][][][][][][][][][][][][][][][][][][][][][][][][][]
  []
 
-) <case.png, id=119, 573.14125pt x 550.055pt>
+)pdfTeX warning (ext4): destination with the same identifier (name{page.}) has 
+been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.224 
+       [3 <./driver.png (PNG copy)>]
+<case.png, id=162, 573.14125pt x 550.055pt>
 File: case.png Graphic file (type png)
  <use case.png>
 Package pdftex.def Info: case.png used on input line 227.
 (pdftex.def)             Requested size: 204.8567pt x 196.60959pt.
-pdfTeX warning (ext4): destination with the same identifier (name{page.}) has b
-een already used, duplicate ignored
-<to be read again> 
-                   \relax 
-l.230 \end{figure}
-                   [3 <./driver.png (PNG copy)>]
+
 Underfull \hbox (badness 1189) in paragraph at lines 244--249
 \OT1/ptm/m/n/10 The speed value can be reg-u-lated via a slider el-e-ment
  []
@@ -492,9 +498,8 @@ Underfull \hbox (badness 10000) in paragraph at lines 244--249
 e.}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.34                 .g
-                       etSpeedValues().size()-1) { [4 <./case.png (PNG copy)>])
-
+l.33                 selectedFocusScene
+                                        [4 <./case.png (PNG copy)>])
 Underfull \hbox (badness 1881) in paragraph at lines 259--260
 \OT1/ptm/m/n/10 app ex-e-cutes a func-tion ev-ery \OT1/ptm/m/it/10 EX-E-CU-TION
 []INTERVAL
@@ -522,7 +527,7 @@ Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 285.
 Here is how much of TeX's memory you used:
  7596 strings out of 493673
  107691 string characters out of 3143948
- 239161 words of memory out of 3000000
+ 238116 words of memory out of 3000000
  10703 multiletter control sequences out of 15000+200000
  31143 words of font info for 75 fonts, out of 3000000 for 9000
  1025 hyphenation exceptions out of 8191
@@ -551,7 +556,7 @@ rogram Files/MiKTeX 2.9/fonts/type1/urw/helvetic/uhvro8a.pfb><C:/Program Files/
 MiKTeX 2.9/fonts/type1/urw/times/utmb8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/
 type1/urw/times/utmr8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/times/u
 tmri8a.pfb>
-Output written on sigchi-sample.pdf (5 pages, 1631575 bytes).
+Output written on sigchi-sample.pdf (5 pages, 1631583 bytes).
 PDF statistics:
  296 PDF objects out of 1000 (max. 8388607)
  122 named destinations out of 1000 (max. 500000)
