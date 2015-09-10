@@ -1,0 +1,75 @@
+This is BibTeX, Version 0.99d (TeX Live 2014)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: sigchi-sample.aux
+The style file: acm-sigchi.bst
+Database file #1: sample.bib
+Warning--entry type for "steppervsservo" isn't style-file defined
+--line 10 of file sample.bib
+Warning--entry type for "diyff" isn't style-file defined
+--line 19 of file sample.bib
+Warning--entry type for "cineman" isn't style-file defined
+--line 28 of file sample.bib
+Warning--entry type for "ble" isn't style-file defined
+--line 44 of file sample.bib
+Warning--entry type for "dassault" isn't style-file defined
+--line 50 of file sample.bib
+Warning--entry type for "devand" isn't style-file defined
+--line 57 of file sample.bib
+Warning--entry type for "soffer" isn't style-file defined
+--line 71 of file sample.bib
+Warning--entry type for "kicklenz" isn't style-file defined
+--line 78 of file sample.bib
+Warning--entry type for "andra" isn't style-file defined
+--line 85 of file sample.bib
+Warning--to sort, need author or key in andra
+Warning--to sort, need author or key in proaim
+Warning--to sort, need author or key in kicklenz
+Warning--to sort, need author or key in diyff
+Warning--to sort, need author or key in ble
+Warning--to sort, need author or key in steppervsservo
+Warning--to sort, need author or key in dassault
+Warning--to sort, need author or key in devand
+Warning--empty author in proaim
+Warning--empty journal in proaim
+You've used 13 entries,
+            2243 wiz_defined-function locations,
+            573 strings with 5354 characters,
+and the built_in function-call counts, 2243 in all, are:
+= -- 209
+> -- 43
+< -- 0
++ -- 24
+- -- 10
+* -- 79
+:= -- 323
+add.period$ -- 31
+call.type$ -- 13
+change.case$ -- 43
+chr.to.int$ -- 0
+cite$ -- 23
+duplicate$ -- 94
+empty$ -- 263
+format.name$ -- 10
+if$ -- 507
+int.to.chr$ -- 0
+int.to.str$ -- 13
+missing$ -- 3
+newline$ -- 60
+num.names$ -- 10
+pop$ -- 107
+preamble$ -- 1
+purify$ -- 31
+quote$ -- 0
+skip$ -- 76
+stack$ -- 0
+substring$ -- 66
+swap$ -- 10
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 50
+warning$ -- 10
+while$ -- 10
+width$ -- 15
+write$ -- 109
+(There were 19 warnings)

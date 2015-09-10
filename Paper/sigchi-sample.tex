@@ -120,36 +120,27 @@ Usually, manual control is required in order to zoom and to keep the focus on th
 
 This section gives a brief overview of a selection of currently existing technologies in the field of follow focus. 
 
-Andra Motion Focus
-
 Andra Motion Focus is a commercial hardware system developed by Andra Motion Technologies Inc. It combines hardware-supported motion capturing with a remote controlled follow focus system. It is currently controllable optionally with an iPad or a dedicated hardware interface, called \textit{The Arc}. Andra Motion Focus is designed for portability and efficiency, in order to reduce the amount of time needed and hence the shoots' cost. Due to the high price, it aims for professional and semi-professional film-makers. \cite{andra}
 
-Lenzhound
+The FF-X1 by PROAIM Camera is exemplary for many similar products on the market. It is a purely manual gear-driven mechanism, that is supposed to "ensure smooth accurate emphasis over your subject" \cite{proaim}. Usage is supported for a wide range of cameras. 
 
 Lenzhound is "A super-affordable wireless follow focus system for indie filmmakers." \cite{kicklenz} It was originally featured on kickstarter by a company called Motion Dogs. The key idea of Lenzhound is, to have a simplistic, hardware- and remote-controlled Focus System. It is belt-driven and can be attached to almost any type of camera lens. Unlike Andra Motion Focus, Lenzhound addresses both amateur and independent film-makers. 
 
-Soffer Follow Focus
-
 "Follow Focus" by Adi Soffer is an open source and Do-it-yourself (DIY) follow focus project from 2013. It is based on Arduino hardware and standard electronical components, which makes it relatively easy to reproduce. The source code can be found on GitHub. \cite{soffer}
-
-
-PROAIM Camera Follow Focus X1 (FF-X1)
-
-The FF-X1 by PROAIM Camera is exemplary for many similar products on the market. It is a purely manual gear-driven mechanism, that is supposed to "ensure smooth accurate emphasis over your subject" \cite{proaim}. Usage is supported for a wide range of cameras. 
 
 
 \subsection{Background}
 
 \subsubsection{Vision}
 
-Considering the difficulties resulting from the precision required while shooting a film, and the often high number of takes, it is worth thinking about a holistic automated system. One that offers not only automated dolly shots, or remote controlled focus pulling, but one that includes everything from camera movement to image composition. As mentioned in the State of the Art Section, there is a wide range of systems available. However, they are often not affordable for independent film-makers, due to their high costs. Also, for most solutions, the benefit is limited to one single use-case, such as focus pulling. 
+Considering the difficulties resulting from the precision required while shooting a film, and the often high number of takes, it is worth thinking about a holistic automated system. One that offers not only automated dolly shots, or remote controlled focus pulling, but one that includes everything from camera movement to image composition. As mentioned in the State of the Art section, there is a wide range of systems available. However, they are often not affordable for independent film-makers, due to their high costs. Also, for most solutions, the benefit is limited to one single use-case, such as focus pulling. 
 
 Consequently, our vision is to create a DIY system, which combines features from several existing solutions.    
 
 
 \subsubsection{Current Research at Ludwig-Maximilian-Universit\"at (LMU)}
 
-Previous and current research conducted by LMU in Munich, Germany has come up with the development of a remote controlled camera slider \cite{pmoerwald} and further theoretical research on automated camera shots \cite{pburgdorf}. 
+Previous and current research conducted by LMU in Munich, Germany has come up with theoretical research on automated camera shots \cite{pburgdorf} and the development of a remote controlled camera slider \cite{pmoerwald}. 
 
 This paper covers the prototypical development of a remote controlled focus pulling device with the long-term objective to get integrated into a system, which combines automated dolly shots, focus pulling and camera tilts.
 
@@ -168,6 +159,8 @@ Having analyzed the existing solutions from the \textit{State of the Art} sectio
   \item The system should be controllable through an Android-based app interface.
   \item The communication between hardware and software should happen via Bluetooth Low Energy (BLE).
 \end{itemize}
+
+The adaptation to different camera types happens through an adjustable gear ring.
 
 BLE is a low-cost wireless technology, which allows data transmission with a comparatively low energy consumption. According to the official bluetooth developer portal, it has the "ability to run for years on standard coin-cell batteries". \cite{ble}
 
@@ -189,7 +182,7 @@ Most importantly we wanted our follow focus to be portable. Therefore the elemen
 	\caption{Low Energy Bluetooth (BTLE) module}
 	\label{fig:BTLE}
 \end{figure} 
-\item For the Wireless control we use BLE (see Figure \ref{fig:BTLE}) for the reasons mentioned above and because the other two LMU projects use this technology as well.
+\item For the Wireless control we use BLE (see Figure \ref{fig:BTLE}) for the reasons mentioned above and for compatibility reasons with other LMU projects, which use this technology as well.
 \begin{figure}
 	\includegraphics[width=0.4\textwidth]{stepper.jpg}
 	\caption{Stepper Motor}
@@ -237,14 +230,14 @@ A second one lies underneath and is designed exclusively for the batteries and a
 \begin{figure}
  	\center
  	\includegraphics[width=0.4\textwidth]{case.png}
-	\caption{Our Wooden Prototype Case}
+	\caption{3D Model of our Prototype Case}
 	\label{fig:Case}
 \end{figure} 
 
 \subsubsection{App Development}
 Challenges
 
-For the development the of the remote controller app, we faced various challenges. As we defined the use of BLE as one of our requirements, only a part of the available Android devices is capable of executing our application, namely those with Android 4.3 or higher and the required hardware module built in. Currently (as of August 3, 2015), 62.1 percent of all Android devices meet the requirements software-sided, while the share of devices, which provide BLE hardware is unknown. \cite{devand} However, we did not consider this being a problem, as the advantages of BLE technology outweigh the disadvantage (compare \textit{Bluetooth Low Energy} in \textit{Our Follow Focus Approach}).
+For the development the of the remote controller app, we faced various challenges. As we defined the use of BLE as one of our requirements, only a part of the available Android devices is capable of executing our application, namely those with Android 4.3 or higher and with the required hardware module built in. Currently (as of August 3, 2015), 62.1 percent of all Android devices meet the requirements software-sided, while the share of devices, which provide BLE hardware is unknown. \cite{devand} However, we do not consider this being a problem, as the advantages of BLE technology outweigh the disadvantage (compare \textit{Bluetooth Low Energy} in \textit{Our Follow Focus Approach}).
 
 The other challenge was, how to implement the required functionalities. Here, it was important to keep the extensibility in mind. As the main goal is, to eventually embed the app and the hardware into to a larger system, it must be developed in a way, that it can be easily extended on the one hand, and that the logic can be transferred into another app on the other hand (compare \textit{Our Vision}). One of the key challenges, was the implementation of the focus sequence recording in a way, that sequences are exactly reproducible. 
 
@@ -257,7 +250,7 @@ As our solution for the controller, we developed an Android App for smartphones.
 Once connected, the lens range of the attached camera can be calibrated in order to prevent the stepper motor from damaging the lens focus thread.
 The underlying logic for focus movement is relatively simple. The app manages two \textit{byte}-values for both speed and direction of the movement.
 The speed value can be regulated via a slider element (\textit{SeekBar} in Android SDK) with a range from 0 to 100. The direction can be either right (IN), left (OUT) or neutral (no movement), and can be regulated via two buttons. The default direction is neutral, and direction changes only, while one of the two buttons is pressed.  \newline
-To implement the focus sequence recording function, we had to think of a way, how the user input could be saved including the temporal aspect. Therefore, the important information is not only \textit{what} the user does, but also \textit{when}. We basically came up with two approaches to this problem: \newline
+To implement the focus sequence recording function, we had to think of a way, of how the user input could be saved including the temporal aspect. Therefore, the important information is not only \textit{what} the user does, but also \textit{when}. We basically came up with two approaches to this problem: \newline
 \begin{itemize}
   \item Whenever a user input occurs, send the data and save the input type and value (e.g. speed 99), as well as the time delta from the beginning of the recording.
   \item Constantly check, save and send current speed and direction every \textit{x} milliseconds.
@@ -272,6 +265,12 @@ As can be seen in \autoref{javacode}, a timer thread in the controller app execu
 
 The calibration works in the following way: The user can move the cameras' focus ring via the \textit{IN} and \textit{OUT} buttons to either the minimum or the maximum stop. By pressing the \textit{set min}, respective \textit{set max} button, the app sends a signal to the Arduino. Upon arrival, it responds with the current position of the stepper motor. The minimum and maximum positions are saved in variables throughout the session. Knowing the current speed and direction, the app also knows the position of the stepper motor at all times. Hence, it can prohibit movement past the limits of the lens.
 
+\begin{figure}
+  \center
+  \includegraphics[width=0.4\textwidth]{prototype.png}
+  \caption{Assembled Prototype}
+  \label{fig:prototype}
+\end{figure} 
 
 \section{Discussion \& Next Steps}
 
@@ -286,6 +285,8 @@ However, there are things that have to be addressed up front:
 The case is equipped with its own power supply, as well as braces, that allow attachment to a camera rail. That means, that the current system can be integrated into the existing camera slider (compare \textit{Current Research at LMU}) independently, from a hardware perspective. 
 
 Software-sided, the next step would be to conceptualize and develop a mobile application, that controls and records not only focus sequences, but also many different aspects of the camera operator related tasks. This is why the outcome of our follow focus app should be seen more as a proof of concept, rather than a fully matured product.
+
+\autoref{fig:prototype} shows the assembled prototype together with a DSLR Camera.
 
 
 \section{Conclusion}
