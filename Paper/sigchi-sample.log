@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2015.8.30)  8 SEP 2015 13:02
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2015.8.30)  10 SEP 2015 13:31
 entering extended mode
 **sigchi-sample.tex
 (sigchi-sample.tex
@@ -442,6 +442,12 @@ File: stepper.jpg Graphic file (type jpg)
  <use stepper.jpg>
 Package pdftex.def Info: stepper.jpg used on input line 194.
 (pdftex.def)             Requested size: 204.8567pt x 204.85913pt.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 198.
+
+
+LaTeX Warning: Citation `steppervsservo' on page \thepage  undefined on input l
+ine 198.
 
 <driver.png, id=102, 249.93375pt x 230.8625pt>
 File: driver.png Graphic file (type png)
@@ -452,13 +458,25 @@ pdfTeX warning (ext4): destination with the same identifier (name{page.}) has b
 een already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.204 \item T
-             he best way to enclose a motor is adapting it to an electrical ...
+l.204 \item I
+             n order to link the motor to the system, we use a stepper drive...
 [2 <./nano.png (PNG copy)> <./btle.jpg> <./stepper.jpg>]
+<circuit.png, id=118, 350.5095pt x 264.99pt>
+File: circuit.png Graphic file (type png)
+ <use circuit.png>
+Package pdftex.def Info: circuit.png used on input line 211.
+(pdftex.def)             Requested size: 204.8567pt x 154.87498pt.
+
+<assembly.png, id=120, 310.761pt x 322.806pt>
+File: assembly.png Graphic file (type png)
+ <use assembly.png>
+Package pdftex.def Info: assembly.png used on input line 216.
+(pdftex.def)             Requested size: 204.8567pt x 212.8014pt.
+
 ("C:\Program Files\MiKTeX 2.9\tex\latex\listings\lstlang1.sty"
 File: lstlang1.sty 2015/06/04 1.6 listings language file
 )
-LaTeX Font Info:    Try loading font information for OT1+pcr on input line 213.
+LaTeX Font Info:    Try loading font information for OT1+pcr on input line 225.
 
 
 ("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\ot1pcr.fd"
@@ -473,65 +491,76 @@ Underfull \hbox (badness 10000) in paragraph at lines 16--17
 [][][][][][][][][][][][][][][][][][][][][][][][][][][][]
  []
 
-)pdfTeX warning (ext4): destination with the same identifier (name{page.}) has 
-been already used, duplicate ignored
-<to be read again> 
-                   \relax 
-l.224 
-       [3 <./driver.png (PNG copy)>]
-<case.png, id=162, 573.14125pt x 550.055pt>
-File: case.png Graphic file (type png)
- <use case.png>
-Package pdftex.def Info: case.png used on input line 227.
-(pdftex.def)             Requested size: 204.8567pt x 196.60959pt.
-
-Underfull \hbox (badness 1189) in paragraph at lines 244--249
-\OT1/ptm/m/n/10 The speed value can be reg-u-lated via a slider el-e-ment
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 244--249
-
- []
-
-(code.javapdfTeX warning (ext4): destination with the same identifier (name{pag
-e.}) has been already used, duplicate ignored
-<to be read again> 
-                   \relax 
-l.33                 selectedFocusScene
-                                        [4 <./case.png (PNG copy)>])
-Underfull \hbox (badness 1881) in paragraph at lines 259--260
-\OT1/ptm/m/n/10 app ex-e-cutes a func-tion ev-ery \OT1/ptm/m/it/10 EX-E-CU-TION
-[]INTERVAL
- []
-
-(sigchi-sample.bbl
-LaTeX Font Info:    Font shape `OT1/pcr/bx/n' in size <8> not available
-(Font)              Font shape `OT1/pcr/b/n' tried instead on input line 5.
-)
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 285.
 pdfTeX warning (ext4): destination with the same identifier (name{page.}) has b
 een already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.285 \end{document}
-                     [5]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 285.
+l.21   }
+         [3 <./driver.png (PNG copy)> <./circuit.png> <./assembly.png>])
+<case.png, id=155, 573.14125pt x 550.055pt>
+File: case.png Graphic file (type png)
+ <use case.png>
+Package pdftex.def Info: case.png used on input line 239.
+(pdftex.def)             Requested size: 204.8567pt x 196.60959pt.
+
+Underfull \hbox (badness 1189) in paragraph at lines 256--261
+\OT1/ptm/m/n/10 The speed value can be reg-u-lated via a slider el-e-ment
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 256--261
+
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+pdfTeX warning (ext4): destination with the same identifier (name{page.}) has b
+een already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.262   \item W
+               henever a user input occurs, send the data and save the input...
+[4 <./case.png (PNG copy)>] (code.java)
+Underfull \hbox (badness 1881) in paragraph at lines 271--272
+\OT1/ptm/m/n/10 app ex-e-cutes a func-tion ev-ery \OT1/ptm/m/it/10 EX-E-CU-TION
+[]INTERVAL
+ []
+
+(sigchi-sample.bblpdfTeX warning (ext4): destination with the same identifier (
+name{page.}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.1 \begin{thebibliography}{10}
+                                [5]
+LaTeX Font Info:    Font shape `OT1/pcr/bx/n' in size <8> not available
+(Font)              Font shape `OT1/pcr/b/n' tried instead on input line 5.
+)
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 297.
+pdfTeX warning (ext4): destination with the same identifier (name{page.}) has b
+een already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.297 \end{document}
+                     [6
+
+]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 297.
  (sigchi-sample.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 285.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 285.
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 297.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 297.
 Package rerunfilecheck Info: File `sigchi-sample.out' has not changed.
 (rerunfilecheck)             Checksum: 923818E6A14E23FB3C5D7C72154D4E5C;1043.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 285.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 297.
  ) 
 Here is how much of TeX's memory you used:
- 7596 strings out of 493673
- 107691 string characters out of 3143948
- 238116 words of memory out of 3000000
- 10703 multiletter control sequences out of 15000+200000
- 31143 words of font info for 75 fonts, out of 3000000 for 9000
+ 7614 strings out of 493673
+ 107938 string characters out of 3143948
+ 264158 words of memory out of 3000000
+ 10716 multiletter control sequences out of 15000+200000
+ 32769 words of font info for 77 fonts, out of 3000000 for 9000
  1025 hyphenation exceptions out of 8191
- 41i,11n,50p,728b,1739s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 41i,11n,50p,728b,1806s stack positions out of 5000i,500n,10000p,200000b,50000s
 pdfTeX warning (dest): name{section*.18} has been referenced but does not exi
 st, replaced by a fixed one
 
@@ -556,9 +585,9 @@ rogram Files/MiKTeX 2.9/fonts/type1/urw/helvetic/uhvro8a.pfb><C:/Program Files/
 MiKTeX 2.9/fonts/type1/urw/times/utmb8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/
 type1/urw/times/utmr8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/times/u
 tmri8a.pfb>
-Output written on sigchi-sample.pdf (5 pages, 1631583 bytes).
+Output written on sigchi-sample.pdf (6 pages, 1790476 bytes).
 PDF statistics:
- 296 PDF objects out of 1000 (max. 8388607)
- 122 named destinations out of 1000 (max. 500000)
- 154 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 308 PDF objects out of 1000 (max. 8388607)
+ 124 named destinations out of 1000 (max. 500000)
+ 164 words of extra memory for PDF output out of 10000 (max. 10000000)
 
