@@ -1,13 +1,13 @@
 # Fdb version 3
-["bibtex sigchi-sample"] 1441898337 "sigchi-sample.aux" "sigchi-sample.bbl" "sigchi-sample" 1441898343
+["bibtex sigchi-sample"] 1442051175 "sigchi-sample.aux" "sigchi-sample.bbl" "sigchi-sample" 1442051385
   "./acm-sigchi.bst" 1313122614 20072 e6117c8e1df770982b2669fe3a5732f1 ""
   "sample.bib" 1441889884 3931 5915c99fe345713f4630256caf2ab793 ""
-  "sigchi-sample.aux" 1441898342 4769 ab8018e11b3ae2e1e271845b64157339 ""
+  "sigchi-sample.aux" 1442051384 4235 895f74d07e506ed0b82338d283ac9183 ""
   "sigchi-sample.bcf" 0 -1 0 ""
   (generated)
   "sigchi-sample.blg"
   "sigchi-sample.bbl"
-["pdflatex"] 1441898338 "sigchi-sample.tex" "sigchi-sample.pdf" "sigchi-sample" 1441898343
+["pdflatex"] 1442051381 "sigchi-sample.tex" "sigchi-sample.pdf" "sigchi-sample" 1442051385
   "/usr/local/texlive/2014/texmf-dist/tex/context/base/supp-pdf.mkii" 1337017135 71627 94eb9990bed73c364d7f53f960cc8c5b ""
   "/usr/local/texlive/2014/texmf-dist/tex/generic/ifxetex/ifxetex.sty" 1284331290 1458 43ab4710dc82f3edeabecd0d099626b2 ""
   "/usr/local/texlive/2014/texmf-dist/tex/generic/oberdiek/gettitlestring.sty" 1303254447 8237 52810bdb4db2270e717422560a104aea ""
@@ -56,22 +56,19 @@
   "/usr/local/texlive/2014/texmf-dist/tex/latex/psnfss/times.sty" 1156702453 857 6c716f26c5eadfb81029fcd6ce2d45e6 ""
   "/usr/local/texlive/2014/texmf-dist/tex/latex/url/url.sty" 1388531844 12796 8edb7d69a20b857904dd0ea757c14ec9 ""
   "assembly.png" 1441889884 119458 76f39de39033ed4765c496c7d95b9336 ""
-  "btle.jpg" 1440969646 33363 4488cf71cac931f99296c3ff0320d2c9 ""
   "case.png" 1440969646 13563 66e0739948b6925990e9848b95294e83 ""
   "circuit.png" 1441889884 59403 ef6ac215be98227ba8a46cc3b3b219bc ""
   "code.c" 1441820307 724 0908986735bb8df394134ddf0654af54 ""
   "code.java" 1441466360 1137 33e97b4b3de10d35b2ef4b1efa273761 ""
-  "driver.png" 1440969646 55430 d57cf3ae48f89c98c0bd1af14c865df7 ""
-  "nano.png" 1440969646 1344900 038334f8a887476aece7754f5aca8caa ""
   "prototype.png" 1441897389 8356373 0db1b4d3d872325a008a6b3b89488826 ""
-  "sigchi-sample.aux" 1441898342 4769 ab8018e11b3ae2e1e271845b64157339 ""
-  "sigchi-sample.bbl" 1441898338 1733 c82faca68589e088b4725ff03881be9b "bibtex sigchi-sample"
-  "sigchi-sample.out" 1441898342 1027 eebd61ab7e454b0a42d62377867286cb ""
-  "sigchi-sample.tex" 1441898332 22566 79d3068f549f0ff841b4b82fef40fd89 ""
+  "sigchi-sample.aux" 1442051384 4235 895f74d07e506ed0b82338d283ac9183 ""
+  "sigchi-sample.bbl" 1442051176 1733 c82faca68589e088b4725ff03881be9b "bibtex sigchi-sample"
+  "sigchi-sample.out" 1442051384 1027 eebd61ab7e454b0a42d62377867286cb ""
+  "sigchi-sample.tex" 1442051374 22218 175d79d86efcbee50e0a771eb9f0dbed ""
   "sigchi.cls" 1440923245 53162 bdaf47bee9605f81af856b59a3c3b5c0 ""
-  "stepper.jpg" 1440969646 8934 104aa13523236b7b2941748ea3e5ab0a ""
+  "ui.png" 1442050643 62886 669fe4f810a95fa19af17248cf7fcbc2 ""
   (generated)
-  "sigchi-sample.pdf"
-  "sigchi-sample.aux"
-  "sigchi-sample.log"
   "sigchi-sample.out"
+  "sigchi-sample.pdf"
+  "sigchi-sample.log"
+  "sigchi-sample.aux"

@@ -114,7 +114,7 @@ This paper covers the development of a novel device for focus pulling in movie p
 \subsubsection{General Description of the Topic}
 
 In movie production, especially the part of \textit{principal photography} is considered one of the most expensive ones. This is, among other reasons, due to the often high number of scene takes, that have to be shot. \cite{kcrabb}
-Usually, manual control is required in order to zoom and to keep the focus on the desired object. In classical productions, the \textit{focus puller} (or \textit{first Assistant Camera}) is a dedicated position, whose job it is to keep the focus according to the cinematographers instructions. As there is no way to correct a falsely set focus in post-production, it is considered one of the hardest jobs on a film set. \cite{cineman}
+Usually, manual control is required in order to zoom and to keep the focus on the desired object. In classical productions, the \textit{focus puller} (or \textit{first Assistant Camera}) is a dedicated position, whose job it is to keep the focus according to the cinematographers instructions. As there is no way to correct a falsely set focus in post-production, it is considered one of the most difficult jobs on a film set. \cite{cineman}
 
 \subsubsection{State of the Art in Follow Focus}
 
@@ -171,30 +171,14 @@ To realize our aims we decided to develop an Android App for input. It sends a p
 \subsubsection{Electrical Engineering}
 Most importantly we wanted our follow focus to be portable. Therefore the elements had to be small, low energy powered and easily embeddable. These challenges had to be tackled in the planning phase of the process. So at first we had to decide between different technologies in order to meet our aims:
 \begin{itemize}
-\begin{figure}
-	\includegraphics[width=0.4\textwidth]{nano.png}
-	\caption{Arduino Nano}
-	\label{fig:Nano}
-\end{figure} 
-\item For our requirements an Arduino Nano (see Figure \ref{fig:Nano}) is more than sufficient. It is small and consumes only little.
-\begin{figure}
-	\includegraphics[width=0.4\textwidth]{btle.jpg}
-	\caption{Low Energy Bluetooth (BTLE) module}
-	\label{fig:BTLE}
-\end{figure} 
-\item For the Wireless control we use BLE (see Figure \ref{fig:BTLE}) for the reasons mentioned above and for compatibility reasons with other LMU projects, which use this technology as well.
-\begin{figure}
-	\includegraphics[width=0.4\textwidth]{stepper.jpg}
-	\caption{Stepper Motor}
-	\label{fig:Stepper}
-\end{figure} 
-\item A stepper motor (see Figure \ref{fig:Stepper}) works more precise and faster than a servo and has only small enertia \cite{steppervsservo}. Also with stepper we always know the exact amount of rotation we have to apply.
-\begin{figure}
-	\includegraphics[width=0.4\textwidth]{driver.png}
-	\caption{Stepper Driver}
-	\label{fig:Driver}
-\end{figure} 
-\item In order to link the motor to the system, we use a stepper driver (see Figure \ref{fig:Driver}). It will protect the Arduino Nano from different electrical damages that may be caused by the sudden increase of intensity by the motor. It also allows to turn in both directions.
+
+\item For our requirements an Arduino Nano is more than sufficient. It is small and consumes only little.
+
+\item For the Wireless control we use BLE for the reasons mentioned above and for compatibility reasons with other LMU projects, which use this technology as well.
+
+\item A stepper motor works more precise and faster than a servo and has only small enertia \cite{steppervsservo}. Also with stepper we always know the exact amount of rotation we have to apply.
+
+\item In order to link the motor to the system, we use a stepper driver. It will protect the Arduino Nano from different electrical damages that may be caused by the sudden increase of intensity by the motor. It also allows to turn in both directions.
 \item The AccelStepper library for Arduino prevents the API from blocking and supports very slow speeds. Furthermore it helps to easily apply acceleration.
 \item None of the electronic parts is passive. To make them all work, we need electric energy. As we also want our global system to be portable, we will use different sets of battery, because the Arduino and the step motor need to be powered separately. At least 5V and 12V respectively.
 \end{itemize}
@@ -213,7 +197,7 @@ In Figures \ref{fig:Circuit} and \ref{fig:Assembly} you can see how all componen
 	
 \autoref{ccode} shows how the received BLE Serial data is being processed on Arduino side. The main loop always checks for connection and if so then at first we perform run() on the stepper. This will result in a step to the next position if there is one due. \\
 Now there are basically two possibilities for our control. Either we use a fixed maximum speed and only change the step size or we vary the speed and use always the same step size. Our experiments showed that the second method performs more fluid and exact. So this is now how react() works: \\
-the Arduino listens to incoming values 0, 43, 45, 49 to 57 which represent the ASCII values of the number keypad. [+] adds one step to the stepper's position and [-] subtracts. [0] stops our stepper immediately. This is necessary as there might be some steps due, because of congestion in the output processing. With Keys [1] to [9] we control nine different speeds.\\
+the Arduino listens to incoming values \textit{0}, \textit{43}, \textit{45}, \textit{49} to \textit{57} which represent the ASCII values of the number keypad. \textit{+} adds one step to the stepper's position and \textit{-} subtracts. \textit{0} stops our stepper immediately. This is necessary as there might be some steps due, because of congestion in the output processing. With Keys \textit{1} to \textit{9} we control nine different speeds.\\
  After react() we run() again due steps and set the new due position which will be executed in the next loop.
 \lstinputlisting[caption=Processing of received BLE serial data, style=customc, label={ccode}]{code.c}
  
@@ -241,8 +225,14 @@ For the development the of the remote controller app, we faced various challenge
 
 The other challenge was, how to implement the required functionalities. Here, it was important to keep the extensibility in mind. As the main goal is, to eventually embed the app and the hardware into to a larger system, it must be developed in a way, that it can be easily extended on the one hand, and that the logic can be transferred into another app on the other hand (compare \textit{Our Vision}). One of the key challenges, was the implementation of the focus sequence recording in a way, that sequences are exactly reproducible. 
 
-Last, but not least, the User Interface (UI) should be created in a way, that makes the app easy to use, especially when it offers multiple different functionalities. As the design of a UI is not directly part of our requirements, we neglect this topic in this paper. 
+Last, but not least, the User Interface (UI) should be created in a way, that makes the app easy to use, especially when it offers multiple different functionalities. As the design of a UI is not directly part of our requirements, we neglect this topic in this paper (see \autoref{fig:UI} for the prototypical UI). 
 
+\begin{figure}
+  \center
+  \includegraphics[width=0.4\textwidth]{ui.png}
+  \caption{Prototypical User Interface}
+  \label{fig:UI}
+\end{figure} 
 
 Our Solution
 
@@ -288,10 +278,11 @@ Software-sided, the next step would be to conceptualize and develop a mobile app
 
 \autoref{fig:prototype} shows the assembled prototype together with a DSLR Camera.
 
-
 \section{Conclusion}
 
 Conclusively, this work has shown, that a more advanced tool for focus pulling can be developed with relatively simple means. The availability of existing open source projects, such as Soffer Follow Focus \cite{soffer} or DIY Follow Focus \cite{diyff}, as well as fairly low priced electronic components lay the foundation for many DIY opportunities. Advanced commercial projects like Andra Motion Focus \cite{andra} represent the current state of the art, and, with their multitude of novel features, serve as a source of inspiration for own projects.
+
+\balance
 
 \bibliographystyle{acm-sigchi}
 \bibliography{sample}
