@@ -29,13 +29,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class DeviceControlActivity extends FragmentActivity implements RecordSceneDialogFragment.NoticeDialogListener {
+public class DeviceControlActivity extends FragmentActivity implements RecordSceneDialogFragment.NoticeDialogListener, DeleteSceneDialogFragment.NoticeDialogListener {
     private final static String TAG = DeviceControlActivity.class.getSimpleName();
 
     public static final String EXTRAS_DEVICE_NAME = "DEVICE_NAME";
@@ -59,8 +60,10 @@ public class DeviceControlActivity extends FragmentActivity implements RecordSce
     private ImageButton playButton;
     private Button reconnectButton;
     private boolean mConnected = false;
+
     private ExpandableHeightListView recordedScenesList;
     private SceneListAdapter sceneListAdapter;
+
     private FocusScene currentFocusScene;
     private FocusScene selectedFocusScene;
 
@@ -338,22 +341,19 @@ public class DeviceControlActivity extends FragmentActivity implements RecordSce
 
          /*
         * Recorded Scenes List - LongClick Listener
-        * Select clicked element and show name of selected element
+        * Select clicked element and show delete dialog
         * */
         recordedScenesList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-               /* DialogFragment tripDialog = new TripDialogFragment();
+                DialogFragment deleteDialog = new DeleteSceneDialogFragment();
                 Bundle args = new Bundle();
-                args.putString("tripMessage", getString(R.string.trip_options) + " \"" + app.getTripList().get(position).getTripName() + "\" " + getString(R.string.trip_options2));
-                args.putString("deleteMessage", getString(R.string.delete_trip) + " \"" + app.getTripList().get(position).getTripName() + "\" " + getString(R.string.delete_trip2));
-                args.putString("tripName", app.getTripList().get(position).getTripName());
-                args.putInt("index", position);
-                tripDialog.setArguments(args);
-                tripDialog.show(getFragmentManager(), "tripOptions");
 
-                return true;         */
-                return false;
+                args.putInt("index", position);
+                deleteDialog.setArguments(args);
+                deleteDialog.show(getFragmentManager(), "deleteSequence");
+
+                return true;
             }
         });
 
@@ -428,8 +428,6 @@ public class DeviceControlActivity extends FragmentActivity implements RecordSce
                     recordButton.setImageResource(R.drawable.record);
                     currentFocusScene.setStatus(currentFocusScene.getSpeedValues().size() * EXECUTION_INTERVAL / 1000 + "s");
                     sceneListAdapter.notifyDataSetChanged();
-
-                    FocusScene recordedScene = currentFocusScene;
 
                     SharedPreferences savedScenes = getSharedPreferences(PREFS_SCENES, 0);
                     SharedPreferences.Editor editor = savedScenes.edit();
@@ -569,5 +567,25 @@ public class DeviceControlActivity extends FragmentActivity implements RecordSce
 
         isRecording = true;
         recordButton.setImageResource(R.drawable.stop);
+    }
+
+    /*
+    * execute, when delete scene dialog was confirmed
+    * - delete scene from list
+    * - save to shared preferences
+    * */
+    public void onDeleteScenePositiveClick(int position) {
+        sceneListAdapter.remove(position);
+        sceneListAdapter.notifyDataSetChanged();
+
+        // save edited list
+        SharedPreferences savedScenes = getSharedPreferences(PREFS_SCENES, 0);
+        SharedPreferences.Editor editor = savedScenes.edit();
+
+        String recordedScenesJson = new Gson().toJson(sceneListAdapter.scenes);
+        editor.putString(SCENE_LIST, recordedScenesJson);
+
+        // Commit the edits!
+        editor.commit();
     }
 }

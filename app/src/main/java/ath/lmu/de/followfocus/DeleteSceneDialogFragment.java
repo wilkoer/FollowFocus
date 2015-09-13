@@ -20,23 +20,22 @@ public class DeleteSceneDialogFragment extends DialogFragment {
         // Use the Builder class for convenient dialog construction
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
+        Bundle bundle = getArguments();
+
+        final int position = bundle.getInt("index");
+
         // Get the layout inflater
         LayoutInflater inflater = getActivity().getLayoutInflater();
 
-        final View view = inflater.inflate(R.layout.record_scene_dialog_layout, null);
-        EditText edit_name = (EditText) view.findViewById(R.id.editText_scene_name);
-
-        edit_name.clearFocus();
+        final View view = inflater.inflate(R.layout.delete_scene_dialog_layout, null);
 
         // Inflate and set the layout for the dialog
         // Pass null as the parent view because its going in the dialog layout
         builder.setView(view)
-                .setPositiveButton(R.string.apply, new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        EditText edit_name = (EditText) view.findViewById(R.id.editText_scene_name);
 
-                        String name = edit_name.getText().toString();
-                        mListener.onNewScenePositiveClick(name);
+                        mListener.onDeleteScenePositiveClick(position);
 
                     }
                 })
@@ -50,7 +49,7 @@ public class DeleteSceneDialogFragment extends DialogFragment {
     }
 
     public interface NoticeDialogListener {
-        public void onNewScenePositiveClick(String name);
+        void onDeleteScenePositiveClick(int position);
     }
 
     // Use this instance of the interface to deliver action events

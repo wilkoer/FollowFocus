@@ -64,6 +64,8 @@
     <string name="none">none</string>
     <string name="currently_recording">recording</string>
 
+    <string name="delete">Delete sequence</string>
+    <string name="delete_query">Do you really want to delete the selected sequence?</string>
 
 
 

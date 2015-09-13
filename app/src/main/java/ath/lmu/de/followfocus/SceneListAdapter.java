@@ -31,6 +31,10 @@ public class SceneListAdapter extends BaseAdapter {
         scenes.add(scene);
     }
 
+    public void remove(int position) {
+        scenes.remove(position);
+    }
+
     @Override
     public int getCount() {
         return scenes.size();
