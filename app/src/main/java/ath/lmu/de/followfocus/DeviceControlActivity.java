@@ -44,6 +44,7 @@ public class DeviceControlActivity extends FragmentActivity implements RecordSce
     public static final String PREFS_SCENES = "RecordedScenes";
     public static final String SCENE_LIST = "SceneList";
     private final long EXECUTION_INTERVAL = 30; // milliseconds
+    private final int STEP_SIZE = 200;
     private boolean isSceneSelected = false;
 
     private TextView mConnectionState;
@@ -75,8 +76,9 @@ public class DeviceControlActivity extends FragmentActivity implements RecordSce
     private boolean isRecording = false;
     private boolean isPlayingScene = false;
 
-    private int lowEndMark = 0;
-    private int highEndMark = 0;
+    private int lowEndMark = -1;
+    private int highEndMark = -1;
+    private int currentStep = 0;
 
     // Code to manage Service lifecycle.
     private final ServiceConnection mServiceConnection = new ServiceConnection() {
@@ -142,6 +144,7 @@ public class DeviceControlActivity extends FragmentActivity implements RecordSce
                                 value = value.replace("HighEndMark", "");
 
                                 highEndMark = Integer.parseInt(value);
+                                currentStep = highEndMark;
                                 Log.d("ATH", highEndMark + "");
 
                             } else if (txValue.contains("LowEndMark")) {
@@ -150,6 +153,7 @@ public class DeviceControlActivity extends FragmentActivity implements RecordSce
                                 }
                                 value = value.replace("LowEndMark", "");
                                 lowEndMark = Integer.parseInt(value);
+                                currentStep = lowEndMark;
                                 Log.d("ATH", lowEndMark + "");
                             }
 
@@ -474,6 +478,18 @@ public class DeviceControlActivity extends FragmentActivity implements RecordSce
                     public void run() {
 
                         if (!isPlayingScene) { // if not playing a recorded scene
+
+                            if (currentDirection == 43) {
+                                currentStep += STEP_SIZE;
+                            } else if (currentDirection == 45) {
+                                currentStep -= STEP_SIZE;
+                            }
+
+                            // calibration boundaries
+                            if (currentStep <= lowEndMark || currentStep <= highEndMark) {
+                                currentDirection = 0;
+                            }
+
                             mBluetoothLeService.writeByte(currentDirection);
                             mBluetoothLeService.writeByte(currentSpeed);
 
