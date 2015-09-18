@@ -43,7 +43,7 @@ public class DeviceControlActivity extends FragmentActivity implements RecordSce
     public static final String EXTRAS_DEVICE_ADDRESS = "DEVICE_ADDRESS";
     public static final String PREFS_SCENES = "RecordedScenes";
     public static final String SCENE_LIST = "SceneList";
-    private final long EXECUTION_INTERVAL = 30; // milliseconds
+    private final long EXECUTION_INTERVAL = 50; // milliseconds
     private final int STEP_SIZE = 200;
     private boolean isSceneSelected = false;
 
@@ -69,7 +69,7 @@ public class DeviceControlActivity extends FragmentActivity implements RecordSce
     private FocusScene selectedFocusScene;
 
     // current speed and direction to be sent to arduino every EXECUTION_INTERVAL seconds
-    private byte currentSpeed = 0;
+    private byte currentSpeed = 49;
     private byte currentDirection = 0;
     private int currentSceneFrame = 0;
 
@@ -486,12 +486,20 @@ public class DeviceControlActivity extends FragmentActivity implements RecordSce
                             }
 
                             // calibration boundaries
-                            if (currentStep <= lowEndMark || currentStep <= highEndMark) {
-                                currentDirection = 0;
+                            if (lowEndMark != -1 && highEndMark != -1) {
+                                if (currentStep >= lowEndMark || currentStep <= highEndMark) {
+                                    //currentDirection = 0;
+                                }
                             }
 
-                            mBluetoothLeService.writeByte(currentDirection);
-                            mBluetoothLeService.writeByte(currentSpeed);
+
+                            try {
+                                mBluetoothLeService.writeByte(currentDirection);
+                                mBluetoothLeService.writeByte(currentSpeed);
+                            } catch(Exception e) {
+
+                            }
+
 
                             // if scene is currently recording, write values into FocusScene object
                             if (isRecording) {
