@@ -41,7 +41,8 @@ AccelStepper stepper(1, 8, 7);
 int enablePin = 3;
 int MinPulseWidth = 50; //too low and the motor will stall, too high and it will slow it down
 int minSpeedValue = 100;
-int maxSpeedValue = 3500;
+int maxSpeedValue = 30
+00;
 
 //Sleep to save energy
 long previousMillis = 0;
@@ -130,10 +131,16 @@ void react()
   else if (dataReceive == 43) //[+]-Key
   {
     encoderValue += stepSize;
+    if (encoderValue > highEndMark){
+        encoderValue = lowEndMark;
+      }
   }
   else if (dataReceive == 45)  //[-]-Key
   {
     encoderValue -= stepSize;
+    if (encoderValue < lowEndMark){
+        encoderValue = lowEndMark;
+      }
   }    
   else if (dataReceive == 0) {
     encoderValue = stepper.currentPosition();
