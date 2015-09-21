@@ -40,9 +40,8 @@ Adafruit_BLE_UART BTLEserial = Adafruit_BLE_UART(ADAFRUITBLE_REQ, ADAFRUITBLE_RD
 AccelStepper stepper(1, 8, 7);
 int enablePin = 3;
 int MinPulseWidth = 50; //too low and the motor will stall, too high and it will slow it down
-int minSpeedValue = 100;
-int maxSpeedValue = 30
-00;
+int minSpeedValue = 50;
+int maxSpeedValue = 2000;
 
 //Sleep to save energy
 long previousMillis = 0;
@@ -132,7 +131,7 @@ void react()
   {
     encoderValue += stepSize;
     if (encoderValue > highEndMark){
-        encoderValue = lowEndMark;
+        encoderValue = highEndMark;
       }
   }
   else if (dataReceive == 45)  //[-]-Key
