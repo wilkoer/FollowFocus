@@ -54,6 +54,7 @@ int speedValue = 1;
 int highEndMark = 500000;
 int lowEndMark = -500000;
 int stepSize = 200;
+bool waitForStartPos = false;
 
 
 void setup(void)
@@ -144,7 +145,7 @@ void react()
   else if (dataReceive == 0) {
     encoderValue = stepper.currentPosition();
   }
-  else if (dataReceive == 97 || dataReceive == 122)
+  else if (dataReceive == 97 || dataReceive == 122 || dataReceive == 115)
   {
     String s = "EndMark";
     if (dataReceive == 97)  //[a]-Key
@@ -157,6 +158,9 @@ void react()
       highEndMark = stepper.currentPosition();
       s = "HighEndMark" + String(highEndMark);
     } 
+    else if (dataReceive == 115) { //[s] for save
+       s = "StartPosition" + String(stepper.currentPosition();
+    }
     // We need to convert the line to bytes, no more than 20 at this time
     uint8_t sendbuffer[20];
     s.getBytes(sendbuffer, 20);
@@ -164,6 +168,33 @@ void react()
     Serial.print(F("\n* Sending -> \"")); Serial.print((char *)sendbuffer); Serial.println("\"");
     BTLEserial.write(sendbuffer, sendbuffersize);
   }
+  else if (dateReceive == 112) {  //[r] for rewind
+     waitForStartPos = true;
+  } else if (waitForStartPos){
+     encoderValue = dataReceive;
+     waitForStartPos = false;
+  }
 } 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
