@@ -79,6 +79,7 @@ public class DeviceControlActivity extends FragmentActivity implements RecordSce
     private int lowEndMark = -1;
     private int highEndMark = -1;
     private int currentStep = 0;
+    private int startPosition = 0;
 
     // Code to manage Service lifecycle.
     private final ServiceConnection mServiceConnection = new ServiceConnection() {
@@ -136,6 +137,19 @@ public class DeviceControlActivity extends FragmentActivity implements RecordSce
 
                             Log.d("ATH", txValue);
                             String value = null;
+
+                            if (txValue.contains("StartPosition")) {
+                                if (txValue.contains("\n")) {
+                                    value = txValue.substring(0, txValue.indexOf("\n"));
+                                }
+                                value = value.replace("StartPosition", "");
+
+                                startPosition = Integer.parseInt(value);
+
+                                if (currentFocusScene != null) {
+                                    currentFocusScene.setStartPosition(startPosition);
+                                }
+                            }
 
                             if (txValue.contains("HighEndMark")) {
                                 if (txValue.contains("\n")) {
@@ -231,7 +245,7 @@ public class DeviceControlActivity extends FragmentActivity implements RecordSce
                     String name = sceneObject.getString("name");
                     String status = sceneObject.getString("status");
 
-                    FocusScene recoveredFocusScene = new FocusScene(status, name, speedValues, movementValues);
+                    FocusScene recoveredFocusScene = new FocusScene(status, name, speedValues, movementValues, startPosition);
                     sceneListAdapter.add(recoveredFocusScene);
                 }
             } catch (JSONException e) {
@@ -337,6 +351,16 @@ public class DeviceControlActivity extends FragmentActivity implements RecordSce
 
                     selectedFocusScene = ((FocusScene) sceneListAdapter.getItem(position));
 
+                    // send signal to rewind
+                    byte rewindByte = 112;
+                    mBluetoothLeService.writeByte(rewindByte);
+
+                    // convert startPosition to byte and send position to rewind to
+                    final BigInteger bi = BigInteger.valueOf(selectedFocusScene.getStartPosition());
+                    final byte[] bytes = bi.toByteArray();
+                    byte startPositionByte = bytes[0];
+                    mBluetoothLeService.writeByte(startPositionByte);
+
                     Toast toast = Toast.makeText(getApplicationContext(), "Scene selected", Toast.LENGTH_LONG);
                     toast.show();
                 }
@@ -421,6 +445,7 @@ public class DeviceControlActivity extends FragmentActivity implements RecordSce
                 if (!isRecording) {
                     DialogFragment newSceneDialog = new RecordSceneDialogFragment();
                     newSceneDialog.show(getFragmentManager(), "new");
+
                 } else {
                     /*
                     * If isRecording, stop recording.
@@ -452,6 +477,9 @@ public class DeviceControlActivity extends FragmentActivity implements RecordSce
         playButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
+
                 /*
                 * set isPlayingScene true,
                 * if a scene is selected
@@ -527,6 +555,11 @@ public class DeviceControlActivity extends FragmentActivity implements RecordSce
                             } else {
                                 currentSceneFrame = 0;
                                 isPlayingScene = false;
+
+                                // send signal to Arduino to save current position before recording.
+                                byte rewindByte = 114; // ASCII "r"
+                                mBluetoothLeService.writeByte(rewindByte);
+
                             }
                         }
                     }
@@ -591,6 +624,10 @@ public class DeviceControlActivity extends FragmentActivity implements RecordSce
 
         isRecording = true;
         recordButton.setImageResource(R.drawable.stop);
+
+        // send signal to Arduino to save current position before playing.
+        byte savePositionByte = 115; // ASCII "s"
+        mBluetoothLeService.writeByte(savePositionByte);
     }
 
     /*

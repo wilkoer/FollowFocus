@@ -10,19 +10,31 @@ public class FocusScene {
     private ArrayList<Integer> speedValues;
     private ArrayList<Integer> movementValues;
     private String name, status;
+    private int startPosition;
 
     public FocusScene(String name) {
         this.name = name;
         this.status = "";
         this.movementValues = new ArrayList<>();
         this.speedValues = new ArrayList<>();
+        this.startPosition = 0;
     }
 
-    public FocusScene(String status, String name, ArrayList<Integer> speedValues, ArrayList<Integer> movementValues) {
+    public int getStartPosition() {
+        return startPosition;
+    }
+
+    public void setStartPosition(int startPosition) {
+        this.startPosition = startPosition;
+    }
+
+    public FocusScene(String status, String name, ArrayList<Integer> speedValues, ArrayList<Integer> movementValues, int startPosition) {
         this.status = status;
         this.name = name;
         this.speedValues = speedValues;
         this.movementValues = movementValues;
+        this.startPosition = startPosition;
+
     }
 
     public String getName() {
